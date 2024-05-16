@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-05-2024 a las 19:33:42
+-- Tiempo de generación: 16-05-2024 a las 15:21:16
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `aecs_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `id` bigint UNSIGNED NOT NULL,
+  `razon_social` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dir` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fono` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `correo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nivel` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_registro` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -91,7 +112,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_24_000001_create_users_table', 1),
 (3, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (4, '2024_01_31_165641_create_configuracions_table', 1),
-(5, '2024_02_02_205431_create_historial_accions_table', 1);
+(5, '2024_02_02_205431_create_historial_accions_table', 1),
+(6, '2024_05_16_110657_create_clientes_table', 2),
+(7, '2024_05_16_110754_create_solicitud_atencions_table', 2),
+(8, '2024_05_16_110830_create_servicios_table', 2);
 
 -- --------------------------------------------------------
 
@@ -141,6 +165,58 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `servicios`
+--
+
+CREATE TABLE `servicios` (
+  `id` bigint UNSIGNED NOT NULL,
+  `cod` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cliente_id` bigint UNSIGNED NOT NULL,
+  `personal_id` bigint UNSIGNED NOT NULL,
+  `fecha` date NOT NULL,
+  `hora_ini` time NOT NULL,
+  `hora_fin` time NOT NULL,
+  `total_horas` double NOT NULL,
+  `ubicacion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `marca` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `modelo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nro_serie` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nro_parte` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nro_activo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_servicio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `problema` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `trabajo_realizado` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `partes` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_trabajo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_registro` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitud_atencions`
+--
+
+CREATE TABLE `solicitud_atencions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `cliente_id` bigint UNSIGNED NOT NULL,
+  `personal_id` bigint UNSIGNED NOT NULL,
+  `descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha` date NOT NULL,
+  `hora` time NOT NULL,
+  `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_registro` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -167,6 +243,12 @@ INSERT INTO `users` (`id`, `personal_id`, `usuario`, `password`, `tipo`, `acceso
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `configuracions`
@@ -201,6 +283,23 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indices de la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `servicios_cod_unique` (`cod`),
+  ADD KEY `servicios_cliente_id_foreign` (`cliente_id`),
+  ADD KEY `servicios_personal_id_foreign` (`personal_id`);
+
+--
+-- Indices de la tabla `solicitud_atencions`
+--
+ALTER TABLE `solicitud_atencions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `solicitud_atencions_cliente_id_foreign` (`cliente_id`),
+  ADD KEY `solicitud_atencions_personal_id_foreign` (`personal_id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -211,6 +310,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -228,7 +333,7 @@ ALTER TABLE `historial_accions`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `personals`
@@ -243,6 +348,18 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `solicitud_atencions`
+--
+ALTER TABLE `solicitud_atencions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
@@ -251,6 +368,20 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  ADD CONSTRAINT `servicios_cliente_id_foreign` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`),
+  ADD CONSTRAINT `servicios_personal_id_foreign` FOREIGN KEY (`personal_id`) REFERENCES `personals` (`id`);
+
+--
+-- Filtros para la tabla `solicitud_atencions`
+--
+ALTER TABLE `solicitud_atencions`
+  ADD CONSTRAINT `solicitud_atencions_cliente_id_foreign` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`),
+  ADD CONSTRAINT `solicitud_atencions_personal_id_foreign` FOREIGN KEY (`personal_id`) REFERENCES `personals` (`id`);
 
 --
 -- Filtros para la tabla `users`
