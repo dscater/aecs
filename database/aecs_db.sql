@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 16-05-2024 a las 15:21:16
+-- Tiempo de generación: 16-05-2024 a las 22:06:44
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -91,6 +91,18 @@ CREATE TABLE `historial_accions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `historial_accions`
+--
+
+INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `datos_original`, `datos_nuevo`, `modulo`, `fecha`, `hora`, `created_at`, `updated_at`) VALUES
+(1, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 2<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>estado_civil: SOLTERO<br/>fecha_nac: 1999-01-01<br/>cel: 77777<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALIDAD #1<br/>record: RECORD<br/>hoja_vida: 1715896355_2.pdf<br/>foto: 1715896355_2.png<br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 17:52:35<br/>updated_at: 2024-05-16 17:52:35<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-16', '17:52:35', '2024-05-16 21:52:35', '2024-05-16 21:52:35'),
+(2, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 3<br/>nombre: ASD<br/>paterno: ASD<br/>materno: ASD<br/>ci: 123<br/>ci_exp: LP<br/>estado_civil: CASADO<br/>fecha_nac: 1999-01-01<br/>cel: 5434535<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALDIAD<br/>record: <br/>hoja_vida: <br/>foto: <br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 18:03:18<br/>updated_at: 2024-05-16 18:03:18<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-16', '18:03:18', '2024-05-16 22:03:18', '2024-05-16 22:03:18'),
+(3, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN PERSONAL TÉCNICO', 'id: 3<br/>nombre: ASD<br/>paterno: ASD<br/>materno: ASD<br/>ci: 123<br/>ci_exp: LP<br/>estado_civil: CASADO<br/>fecha_nac: 1999-01-01<br/>cel: 5434535<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALDIAD<br/>record: <br/>hoja_vida: <br/>foto: <br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 18:03:18<br/>updated_at: 2024-05-16 18:03:18<br/>', 'id: 3<br/>nombre: MARIO<br/>paterno: PAREDES<br/>materno: MARTINEZ<br/>ci: 2222<br/>ci_exp: CB<br/>estado_civil: DIVORCIADO<br/>fecha_nac: 2000-01-01<br/>cel: 6677777<br/>domicilio: LOS OLIVOS PEDREGALES<br/>especialidad: ESPECIALDIAD #2<br/>record: RECORD 2<br/>hoja_vida: 1715897073_3.pdf<br/>foto: 1715897073_3.jpg<br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 18:03:18<br/>updated_at: 2024-05-16 18:04:33<br/>', 'PERSONAL TÉCNICO', '2024-05-16', '18:04:33', '2024-05-16 22:04:33', '2024-05-16 22:04:33'),
+(4, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN PERSONAL TÉCNICO', 'id: 3<br/>nombre: MARIO<br/>paterno: PAREDES<br/>materno: MARTINEZ<br/>ci: 2222<br/>ci_exp: CB<br/>estado_civil: DIVORCIADO<br/>fecha_nac: 2000-01-01<br/>cel: 6677777<br/>domicilio: LOS OLIVOS PEDREGALES<br/>especialidad: ESPECIALDIAD #2<br/>record: RECORD 2<br/>hoja_vida: 1715897073_3.pdf<br/>foto: 1715897073_3.jpg<br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 18:03:18<br/>updated_at: 2024-05-16 18:04:33<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-16', '18:05:14', '2024-05-16 22:05:14', '2024-05-16 22:05:14'),
+(5, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN PERSONAL TÉCNICO', 'id: 2<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>estado_civil: SOLTERO<br/>fecha_nac: 1999-01-01<br/>cel: 77777<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALIDAD #1<br/>record: RECORD<br/>hoja_vida: 1715896355_2.pdf<br/>foto: 1715896355_2.png<br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 17:52:35<br/>updated_at: 2024-05-16 17:52:35<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-16', '18:05:21', '2024-05-16 22:05:21', '2024-05-16 22:05:21'),
+(6, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 1<br/>nombre: JUAN<br/>paterno: PERES<br/>materno: MAMANI<br/>ci: 1111<br/>ci_exp: LP<br/>estado_civil: SOLTERO<br/>fecha_nac: 1999-01-01<br/>cel: 7777777<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALIDAD #2<br/>record: RECORD<br/>hoja_vida: 1715897155_1.pdf<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-16<br/>created_at: 2024-05-16 18:05:55<br/>updated_at: 2024-05-16 18:05:55<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-16', '18:05:55', '2024-05-16 22:05:55', '2024-05-16 22:05:55');
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +154,13 @@ CREATE TABLE `personals` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personals`
+--
+
+INSERT INTO `personals` (`id`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `estado_civil`, `fecha_nac`, `cel`, `domicilio`, `especialidad`, `record`, `hoja_vida`, `foto`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'JUAN', 'PERES', 'MAMANI', '1111', 'LP', 'SOLTERO', '1999-01-01', '7777777', 'LOS OLIVOS', 'ESPECIALIDAD #2', 'RECORD', '1715897155_1.pdf', '1715897155_1.jpg', '2024-05-16', '2024-05-16 22:05:55', '2024-05-16 22:05:55');
 
 -- --------------------------------------------------------
 
@@ -327,7 +346,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -339,7 +358,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `personals`
 --
 ALTER TABLE `personals`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`

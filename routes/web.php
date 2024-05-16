@@ -89,12 +89,8 @@ Route::middleware('auth')->group(function () {
     // PERSONAL
     Route::get("/personals/paginado", [PersonalController::class, 'paginado'])->name("personals.paginado");
     Route::get("/personals/listado", [PersonalController::class, 'listado'])->name("personals.listado");
-    Route::get("/personals/listado/byTipo", [PersonalController::class, 'byTipo'])->name("personals.byTipo");
-    Route::get("/personals/show/{user}", [PersonalController::class, 'show'])->name("personals.show");
-    Route::put("/personals/update/{user}", [PersonalController::class, 'update'])->name("personals.update");
-    Route::delete("/personals/{user}", [PersonalController::class, 'destroy'])->name("personals.destroy");
     Route::resource("personals", PersonalController::class)->only(
-        ["index", "store"]
+        ["index", "store", "update", "show", "destroy"]
     );
 
 

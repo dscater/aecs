@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialAccion;
+use App\Models\Personal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class PersonalController extends Controller
@@ -12,9 +17,10 @@ class PersonalController extends Controller
         "paterno" => "required|min:1",
         "ci" => "required|min:1",
         "ci_exp" => "required",
-        "dir" => "required|min:1",
-        "fono" => "required|min:1",
-        "tipo" => "required",
+        "estado_civil" => "required",
+        "fecha_nac" => "required",
+        "especialidad" => "required",
+        "cel" => "required|min:1",
     ];
 
     public $mensajes = [
@@ -26,11 +32,11 @@ class PersonalController extends Controller
         "ci.unique" => "Este C.I. ya fue registrado",
         "ci.min" => "Debes ingresar al menos :min caracteres",
         "ci_exp.required" => "Este campo es obligatorio",
-        "dir.required" => "Este campo es obligatorio",
-        "dir.min" => "Debes ingresar al menos :min caracteres",
-        "fono.required" => "Este campo es obligatorio",
-        "fono.min" => "Debes ingresar al menos :min caracteres",
-        "tipo.required" => "Este campo es obligatorio",
+        "estado_civil.required" => "Este campo es obligatorio",
+        "fecha_nac.required" => "Este campo es obligatorio",
+        "especialidad.required" => "Este campo es obligatorio",
+        "cel.required" => "Este campo es obligatorio",
+        "cel.min" => "Debes ingresar al menos :min caracteres",
     ];
 
     public function index()
@@ -40,95 +46,70 @@ class PersonalController extends Controller
 
     public function listado()
     {
-        $usuarios = User::where("id", "!=", 1)->get();
+        $personals = Personal::select("personals.*")->get();
         return response()->JSON([
-            "usuarios" => $usuarios
-        ]);
-    }
-
-    public function byTipo(Request $request)
-    {
-        $usuarios = User::where("id", "!=", 1);
-        if (isset($request->tipo) && trim($request->tipo) != "") {
-            $usuarios = $usuarios->where("tipo", $request->tipo);
-        }
-
-        if ($request->order && $request->order == "desc") {
-            $usuarios->orderBy("users.id", "desc");
-        }
-
-        $usuarios = $usuarios->get();
-
-        return response()->JSON([
-            "usuarios" => $usuarios
+            "personals" => $personals
         ]);
     }
 
     public function paginado(Request $request)
     {
         $search = $request->search;
-        $usuarios = User::where("id", "!=", 1);
+        $personals = Personal::select("personals.*");
 
         if (trim($search) != "") {
-            $usuarios->where("nombre", "LIKE", "%$search%");
-            $usuarios->orWhere("paterno", "LIKE", "%$search%");
-            $usuarios->orWhere("materno", "LIKE", "%$search%");
-            $usuarios->orWhere("ci", "LIKE", "%$search%");
+            $personals->where("nombre", "LIKE", "%$search%");
+            $personals->orWhere("paterno", "LIKE", "%$search%");
+            $personals->orWhere("materno", "LIKE", "%$search%");
+            $personals->orWhere("ci", "LIKE", "%$search%");
         }
 
-        $usuarios = $usuarios->paginate($request->itemsPerPage);
+        $personals = $personals->paginate($request->itemsPerPage);
         return response()->JSON([
-            "usuarios" => $usuarios
+            "personals" => $personals
         ]);
     }
 
     public function store(Request $request)
     {
-        $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci';
+        $this->validacion['ci'] = 'required|min:4|numeric|unique:personals,ci';
         if ($request->hasFile('foto')) {
             $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
         }
         $request->validate($this->validacion, $this->mensajes);
 
-        $cont = 0;
-        do {
-            $nombre_usuario = User::getNombreUsuario($request->nombre, $request->paterno);
-            if ($cont > 0) {
-                $nombre_usuario = $nombre_usuario . $cont;
-            }
-            $request['usuario'] = $nombre_usuario;
-            $cont++;
-        } while (User::where('usuario', $nombre_usuario)->get()->first());
-
-        $request['password'] = 'NoNulo';
         $request['fecha_registro'] = date('Y-m-d');
         DB::beginTransaction();
         try {
-            // crear el Usuario
-            $nuevo_usuario = User::create(array_map('mb_strtoupper', $request->except('foto')));
-            $nuevo_usuario->password = Hash::make($request->ci);
-            $nuevo_usuario->save();
+            // crear el Personal
+            $nuevo_personal = Personal::create(array_map('mb_strtoupper', $request->except('foto', 'hoja_vida')));
             if ($request->hasFile('foto')) {
                 $file = $request->foto;
-                $nom_foto = time() . '_' . $nuevo_usuario->usuario . '.' . $file->getClientOriginalExtension();
-                $nuevo_usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
+                $nom_foto = time() . '_' . $nuevo_personal->id . '.' . $file->getClientOriginalExtension();
+                $nuevo_personal->foto = $nom_foto;
+                $file->move(public_path() . '/imgs/personals/', $nom_foto);
             }
-            $nuevo_usuario->save();
+            if ($request->hasFile('hoja_vida')) {
+                $file = $request->hoja_vida;
+                $nom_hoja_vida = time() . '_' . $nuevo_personal->id . '.' . $file->getClientOriginalExtension();
+                $nuevo_personal->hoja_vida = $nom_hoja_vida;
+                $file->move(public_path() . '/files/', $nom_hoja_vida);
+            }
+            $nuevo_personal->save();
 
-            $datos_original = HistorialAccion::getDetalleRegistro($nuevo_usuario, "users");
+            $datos_original = HistorialAccion::getDetalleRegistro($nuevo_personal, "personals");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'CREACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' REGISTRO UN USUARIO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' REGISTRO UN PERSONAL TÉCNICO',
                 'datos_original' => $datos_original,
-                'modulo' => 'USUARIOS',
+                'modulo' => 'PERSONAL TÉCNICO',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
 
             DB::commit();
-            return redirect()->route("usuarios.index")->with("bien", "Registro realizado");
+            return redirect()->route("personals.index")->with("bien", "Registro realizado");
         } catch (\Exception $e) {
             DB::rollBack();
             throw ValidationException::withMessages([
@@ -137,48 +118,58 @@ class PersonalController extends Controller
         }
     }
 
-    public function show(User $user)
+    public function show(Personal $personal)
     {
     }
 
-    public function update(User $user, Request $request)
+    public function update(Personal $personal, Request $request)
     {
-        $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci,' . $user->id;
+        $this->validacion['ci'] = 'required|min:4|numeric|unique:personals,ci,' . $personal->id;
         if ($request->hasFile('foto')) {
             $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
         }
         $request->validate($this->validacion, $this->mensajes);
         DB::beginTransaction();
         try {
-            $datos_original = HistorialAccion::getDetalleRegistro($user, "users");
-            $user->update(array_map('mb_strtoupper', $request->except('foto')));
+            $datos_original = HistorialAccion::getDetalleRegistro($personal, "personals");
+            $personal->update(array_map('mb_strtoupper', $request->except('foto', 'hoja_vida')));
             if ($request->hasFile('foto')) {
-                $antiguo = $user->foto;
+                $antiguo = $personal->foto;
                 if ($antiguo != 'default.png') {
-                    \File::delete(public_path() . '/imgs/users/' . $antiguo);
+                    \File::delete(public_path() . '/imgs/personals/' . $antiguo);
                 }
                 $file = $request->foto;
-                $nom_foto = time() . '_' . $user->usuario . '.' . $file->getClientOriginalExtension();
-                $user->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
+                $nom_foto = time() . '_' . $personal->id . '.' . $file->getClientOriginalExtension();
+                $personal->foto = $nom_foto;
+                $file->move(public_path() . '/imgs/personals/', $nom_foto);
             }
-            $user->save();
+            if ($request->hasFile('hoja_vida')) {
+                $antiguo = $personal->hoja_vida;
+                if ($antiguo) {
+                    \File::delete(public_path() . '/files/' . $antiguo);
+                }
+                $file = $request->hoja_vida;
+                $nom_hoja_vida = time() . '_' . $personal->id . '.' . $file->getClientOriginalExtension();
+                $personal->hoja_vida = $nom_hoja_vida;
+                $file->move(public_path() . '/files/', $nom_hoja_vida);
+            }
+            $personal->save();
 
-            $datos_nuevo = HistorialAccion::getDetalleRegistro($user, "users");
+            $datos_nuevo = HistorialAccion::getDetalleRegistro($personal, "personals");
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'MODIFICACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UN USUARIO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UN PERSONAL TÉCNICO',
                 'datos_original' => $datos_original,
                 'datos_nuevo' => $datos_nuevo,
-                'modulo' => 'USUARIOS',
+                'modulo' => 'PERSONAL TÉCNICO',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
 
 
             DB::commit();
-            return redirect()->route("usuarios.index")->with("bien", "Registro actualizado");
+            return redirect()->route("personals.index")->with("bien", "Registro actualizado");
         } catch (\Exception $e) {
             DB::rollBack();
             // Log::debug($e->getMessage());
@@ -188,35 +179,26 @@ class PersonalController extends Controller
         }
     }
 
-    public function destroy(User $user)
+    public function destroy(Personal $personal)
     {
         DB::beginTransaction();
         try {
-            $usos = Obra::where("gerente_regional_id", $user->id)->get();
-            if (count($usos) > 0) {
-                throw ValidationException::withMessages([
-                    'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
-                ]);
-            }
-            $usos = Obra::where("encargado_obra_id", $user->id)->get();
-            if (count($usos) > 0) {
-                throw ValidationException::withMessages([
-                    'error' =>  "No es posible eliminar este registro porque esta siendo utilizado por otros registros",
-                ]);
-            }
-
-            $antiguo = $user->foto;
+            $antiguo = $personal->foto;
             if ($antiguo != 'default.png') {
-                \File::delete(public_path() . '/imgs/users/' . $antiguo);
+                \File::delete(public_path() . '/imgs/personals/' . $antiguo);
             }
-            $datos_original = HistorialAccion::getDetalleRegistro($user, "users");
-            $user->delete();
+            $antiguo = $personal->hoja_vida;
+            if ($antiguo) {
+                \File::delete(public_path() . '/files/' . $antiguo);
+            }
+            $datos_original = HistorialAccion::getDetalleRegistro($personal, "personals");
+            $personal->delete();
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'ELIMINACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' ELIMINÓ UN USUARIO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' ELIMINÓ UN PERSONAL TÉCNICO',
                 'datos_original' => $datos_original,
-                'modulo' => 'USUARIOS',
+                'modulo' => 'PERSONAL TÉCNICO',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);

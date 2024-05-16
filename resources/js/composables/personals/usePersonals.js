@@ -2,28 +2,35 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
-const oOperario = ref({
+const oPersonal = ref({
     id: 0,
     nombre: "",
     paterno: "",
     materno: "",
     ci: "",
     ci_exp: "",
-    fono: "",
-    tipo: "",
-    fecha_registro: "",
+    estado_civil: "",
+    fecha_nac: "",
+    cel: "",
+    domicilio: "",
+    especialidad: "",
+    record: "",
+    hoja_vida: "",
+    foto: "",
+    // appends
+    url_hoja_vida: "",
+    url_foto: "",
     _method: "POST",
 });
 
-export const useOperarios = () => {
+export const usePersonals = () => {
     const { flash } = usePage().props;
-    const getOperarios = async (data) => {
+    const getPersonals = async () => {
         try {
-            const response = await axios.get(route("operarios.listado"), {
+            const response = await axios.get(route("personals.listado"), {
                 headers: { Accept: "application/json" },
-                params: data,
             });
-            return response.data.operarios;
+            return response.data.personals;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -42,15 +49,15 @@ export const useOperarios = () => {
         }
     };
 
-    const getOperariosApi = async (data) => {
+    const getPersonalsApi = async (data) => {
         try {
             const response = await axios.get(
-                route("operarios.paginado", data),
+                route("personals.paginado", data),
                 {
                     headers: { Accept: "application/json" },
                 }
             );
-            return response.data.operarios;
+            return response.data.personals;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -68,9 +75,9 @@ export const useOperarios = () => {
             throw err; // Puedes manejar el error según tus necesidades
         }
     };
-    const saveOperario = async (data) => {
+    const savePersonal = async (data) => {
         try {
-            const response = await axios.post(route("operarios.store", data), {
+            const response = await axios.post(route("personals.store", data), {
                 headers: { Accept: "application/json" },
             });
             Swal.fire({
@@ -83,13 +90,13 @@ export const useOperarios = () => {
             return response.data;
         } catch (err) {
             Swal.fire({
-                icon: "info",
+                icon: "error",
                 title: "Error",
                 text: `${
                     flash.error
                         ? flash.error
-                        : err.error
-                        ? err.error
+                        : err.response?.data
+                        ? err.response?.data?.message
                         : "Hay errores en el formulario"
                 }`,
                 confirmButtonColor: "#3085d6",
@@ -100,10 +107,10 @@ export const useOperarios = () => {
         }
     };
 
-    const deleteOperario = async (id) => {
+    const deletePersonal = async (id) => {
         try {
             const response = await axios.delete(
-                route("operarios.destroy", id),
+                route("personals.destroy", id),
                 {
                     headers: { Accept: "application/json" },
                 }
@@ -118,62 +125,74 @@ export const useOperarios = () => {
             return response.data;
         } catch (err) {
             Swal.fire({
-                icon: "info",
+                icon: "error",
                 title: "Error",
                 text: `${
                     flash.error
                         ? flash.error
-                        : err.error
-                        ? err.error
+                        : err.response?.data
+                        ? err.response?.data?.message
                         : "Hay errores en el formulario"
                 }`,
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: `Aceptar`,
             });
-            console.error("Error:", err);
             throw err; // Puedes manejar el error según tus necesidades
         }
     };
 
-    const setOperario = (item = null) => {
+    const setPersonal = (item = null, hoja_vida = false) => {
         if (item) {
-            oOperario.value.id = item.id;
-            oOperario.value.nombre = item.nombre;
-            oOperario.value.paterno = item.paterno;
-            oOperario.value.materno = item.materno;
-            oOperario.value.ci = item.ci;
-            oOperario.value.ci_exp = item.ci_exp;
-            oOperario.value.fono = item.fono;
-            oOperario.value.tipo = item.tipo;
-            oOperario.value.fecha_registro = item.fecha_registro;
-            oOperario.value._method = "PUT";
-            return oOperario;
+            oPersonal.value.id = item.id;
+            oPersonal.value.nombre = item.nombre;
+            oPersonal.value.paterno = item.paterno;
+            oPersonal.value.materno = item.materno;
+            oPersonal.value.ci = item.ci;
+            oPersonal.value.ci_exp = item.ci_exp;
+            oPersonal.value.estado_civil = item.estado_civil;
+            oPersonal.value.fecha_nac = item.fecha_nac;
+            oPersonal.value.cel = item.cel;
+            oPersonal.value.domicilio = item.domicilio;
+            oPersonal.value.especialidad = item.especialidad;
+            oPersonal.value.record = item.record;
+            oPersonal.value.hoja_vida = item.hoja_vida;
+            oPersonal.value.foto = item.foto;
+            if (hoja_vida) {
+                oPersonal.value.url_hoja_vida = item.url_hoja_vida;
+            }
+            oPersonal.value._method = "PUT";
+            return oPersonal;
         }
         return false;
     };
 
-    const limpiarOperario = () => {
-        oOperario.value.id = 0;
-        oOperario.value.nombre = "";
-        oOperario.value.paterno = "";
-        oOperario.value.materno = "";
-        oOperario.value.ci = "";
-        oOperario.value.ci_exp = "";
-        oOperario.value.fono = "";
-        oOperario.value.tipo = "";
-        oOperario.value.fecha_registro = "";
-        oOperario.value._method = "POST";
+    const limpiarPersonal = () => {
+        oPersonal.value.id = 0;
+        oPersonal.value.nombre = "";
+        oPersonal.value.paterno = "";
+        oPersonal.value.materno = "";
+        oPersonal.value.ci = "";
+        oPersonal.value.ci_exp = "";
+        oPersonal.value.estado_civil = "";
+        oPersonal.value.fecha_nac = "";
+        oPersonal.value.cel = "";
+        oPersonal.value.domicilio = "";
+        oPersonal.value.especialidad = "";
+        oPersonal.value.record = "";
+        oPersonal.value.hoja_vida = "";
+        oPersonal.value.foto = "";
+        oPersonal.value._method = "POST";
     };
 
     onMounted(() => {});
 
     return {
-        oOperario,
-        getOperarios,
-        getOperariosApi,
-        saveOperario,
-        deleteOperario,
-        setOperario,
-        limpiarOperario,
+        oPersonal,
+        getPersonals,
+        getPersonalsApi,
+        savePersonal,
+        deletePersonal,
+        setPersonal,
+        limpiarPersonal,
     };
 };
