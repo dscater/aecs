@@ -197,12 +197,8 @@ const eliminarUsuario = (item) => {
                                     <td>{{ item.id }}</td>
                                     <td>{{ item.usuario }}</td>
                                     <td class="text-xs-right">
-                                        {{ item.full_name }}
+                                        {{ item.personal.full_name }}
                                     </td>
-                                    <td>{{ item.full_ci }}</td>
-                                    <td>{{ item.dir }}</td>
-                                    <td>{{ item.email }}</td>
-                                    <td>{{ item.fono }}</td>
                                     <td>
                                         <v-avatar color="blue">
                                             <v-img

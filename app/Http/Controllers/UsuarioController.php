@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HistorialAccion;
 use App\Models\Obra;
+use App\Models\Personal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,28 +17,12 @@ use Illuminate\Validation\ValidationException;
 class UsuarioController extends Controller
 {
     public $validacion = [
-        "nombre" => "required|min:1",
-        "paterno" => "required|min:1",
-        "ci" => "required|min:1",
-        "ci_exp" => "required",
-        "dir" => "required|min:1",
-        "fono" => "required|min:1",
+        "personal_id" => "required",
         "tipo" => "required",
     ];
 
     public $mensajes = [
-        "nombre.required" => "Este campo es obligatorio",
-        "nombre.min" => "Debes ingresar al menos :min caracteres",
-        "paterno.required" => "Este campo es obligatorio",
-        "paterno.min" => "Debes ingresar al menos :min caracteres",
-        "ci.required" => "Este campo es obligatorio",
-        "ci.unique" => "Este C.I. ya fue registrado",
-        "ci.min" => "Debes ingresar al menos :min caracteres",
-        "ci_exp.required" => "Este campo es obligatorio",
-        "dir.required" => "Este campo es obligatorio",
-        "dir.min" => "Debes ingresar al menos :min caracteres",
-        "fono.required" => "Este campo es obligatorio",
-        "fono.min" => "Debes ingresar al menos :min caracteres",
+        "personal_id.required" => "Este campo es obligatorio",
         "tipo.required" => "Este campo es obligatorio",
     ];
 
@@ -48,7 +33,8 @@ class UsuarioController extends Controller
 
     public function listado()
     {
-        $usuarios = User::where("id", "!=", 1)->get();
+        $usuarios = User::select("users.*")
+            ->where("id", "!=", 1)->get();
         return response()->JSON([
             "usuarios" => $usuarios
         ]);
@@ -75,13 +61,16 @@ class UsuarioController extends Controller
     public function paginado(Request $request)
     {
         $search = $request->search;
-        $usuarios = User::where("id", "!=", 1);
+        $usuarios = User::with(["personal"])
+            ->select("users.*")
+            ->join("personals", "personals.id", "=", "users.personal_id")
+            ->where("users.id", "!=", 1);
 
         if (trim($search) != "") {
-            $usuarios->where("nombre", "LIKE", "%$search%");
-            $usuarios->orWhere("paterno", "LIKE", "%$search%");
-            $usuarios->orWhere("materno", "LIKE", "%$search%");
-            $usuarios->orWhere("ci", "LIKE", "%$search%");
+            $usuarios->where("personals.nombre", "LIKE", "%$search%");
+            $usuarios->orWhere("personals.paterno", "LIKE", "%$search%");
+            $usuarios->orWhere("personals.materno", "LIKE", "%$search%");
+            $usuarios->orWhere("personals.ci", "LIKE", "%$search%");
         }
 
         $usuarios = $usuarios->paginate($request->itemsPerPage);
@@ -92,35 +81,31 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci';
-        if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
-        }
         $request->validate($this->validacion, $this->mensajes);
 
-        $cont = 0;
-        do {
-            $nombre_usuario = User::getNombreUsuario($request->nombre, $request->paterno);
-            if ($cont > 0) {
-                $nombre_usuario = $nombre_usuario . $cont;
-            }
-            $request['usuario'] = $nombre_usuario;
-            $cont++;
-        } while (User::where('usuario', $nombre_usuario)->get()->first());
-
-        $request['password'] = 'NoNulo';
-        $request['fecha_registro'] = date('Y-m-d');
         DB::beginTransaction();
         try {
+            $personal = Personal::findOrFail($request->personal_id);
+
+            $cont = 0;
+            do {
+                $nombre_usuario = User::getNombreUsuario($personal->nombre, $personal->paterno);
+                if ($cont > 0) {
+                    $nombre_usuario = $nombre_usuario . $cont;
+                }
+                $request['usuario'] = $nombre_usuario;
+                $cont++;
+            } while (User::where('usuario', $nombre_usuario)->get()->first());
+
+            $request['password'] = 'NoNulo';
+            $request['fecha_registro'] = date('Y-m-d');
+
             // crear el Usuario
             $nuevo_usuario = User::create(array_map('mb_strtoupper', $request->except('foto')));
-            $nuevo_usuario->password = Hash::make($request->ci);
+            $nuevo_usuario->password = Hash::make($personal->ci);
             $nuevo_usuario->save();
-            if ($request->hasFile('foto')) {
-                $file = $request->foto;
-                $nom_foto = time() . '_' . $nuevo_usuario->usuario . '.' . $file->getClientOriginalExtension();
-                $nuevo_usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
+            if ($personal->foto) {
+                $nuevo_usuario->foto = $personal->foto;
             }
             $nuevo_usuario->save();
 

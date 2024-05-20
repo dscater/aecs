@@ -4,14 +4,7 @@ import { usePage } from "@inertiajs/vue3";
 
 const oUsuario = ref({
     id: 0,
-    nombre: "",
-    paterno: "",
-    materno: "",
-    ci: "",
-    ci_exp: "",
-    dir: "",
-    email: "",
-    fono: "",
+    personal_id: "",
     tipo: "",
     foto: "",
     acceso: 0 + "",
@@ -20,10 +13,11 @@ const oUsuario = ref({
 
 export const useUsuarios = () => {
     const { flash } = usePage().props;
-    const getUsuarios = async () => {
+    const getUsuarios = async (data) => {
         try {
             const response = await axios.get(route("usuarios.listado"), {
                 headers: { Accept: "application/json" },
+                params: data,
             });
             return response.data.usuarios;
         } catch (err) {
@@ -145,16 +139,8 @@ export const useUsuarios = () => {
     const setUsuario = (item = null) => {
         if (item) {
             oUsuario.value.id = item.id;
-            oUsuario.value.nombre = item.nombre;
-            oUsuario.value.paterno = item.paterno;
-            oUsuario.value.materno = item.materno;
-            oUsuario.value.ci = item.ci;
-            oUsuario.value.ci_exp = item.ci_exp;
-            oUsuario.value.dir = item.dir;
-            oUsuario.value.email = item.email;
-            oUsuario.value.fono = item.fono;
+            oUsuario.value.personal_id = item.personal_id;
             oUsuario.value.tipo = item.tipo;
-            oUsuario.value.foto = item.foto;
             oUsuario.value.acceso = item.acceso + "";
             oUsuario.value._method = "PUT";
             return oUsuario;
@@ -164,14 +150,7 @@ export const useUsuarios = () => {
 
     const limpiarUsuario = () => {
         oUsuario.value.id = 0;
-        oUsuario.value.nombre = "";
-        oUsuario.value.paterno = "";
-        oUsuario.value.materno = "";
-        oUsuario.value.ci = "";
-        oUsuario.value.ci_exp = "";
-        oUsuario.value.dir = "";
-        oUsuario.value.email = "";
-        oUsuario.value.fono = "";
+        oUsuario.value.personal_id = null;
         oUsuario.value.tipo = "";
         oUsuario.value.foto = "";
         oUsuario.value.acceso = 0 + "";

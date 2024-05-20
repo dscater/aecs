@@ -63,14 +63,20 @@ class ProfileController extends Controller
             if ($request->hasFile('foto')) {
                 $antiguo = $usuario->foto;
                 if ($antiguo != 'default.png') {
-                    \File::delete(public_path() . '/imgs/users/' . $antiguo);
+                    \File::delete(public_path() . '/imgs/personals/' . $antiguo);
                 }
                 $file = $request->foto;
                 $nom_foto = time() . '_' . $usuario->usuario . '.' . $file->getClientOriginalExtension();
                 $usuario->foto = $nom_foto;
-                $file->move(public_path() . '/imgs/users/', $nom_foto);
+                $file->move(public_path() . '/imgs/personals/', $nom_foto);
             }
             $usuario->save();
+
+            if ($usuario->personal) {
+                $usuario->personal->foto = $usuario->foto;
+                $usuario->personal->save();
+            }
+
             DB::commit();
             return Redirect::route('profile.edit')->with("bien", "Perfil actualizado");
         } catch (\Exception $e) {

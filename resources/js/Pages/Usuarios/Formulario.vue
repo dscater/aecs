@@ -1,6 +1,7 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
 import { useUsuarios } from "@/composables/usuarios/useUsuarios";
+import { usePersonals } from "@/composables/personals/usePersonals";
 import { watch, ref, computed, defineEmits } from "vue";
 const props = defineProps({
     open_dialog: {
@@ -14,8 +15,11 @@ const props = defineProps({
 });
 
 const { oUsuario, limpiarUsuario } = useUsuarios();
+const { getPersonals } = usePersonals();
 const accion = ref(props.accion_dialog);
 const dialog = ref(props.open_dialog);
+const listPersonal = ref([]);
+
 let form = useForm(oUsuario.value);
 watch(
     () => props.open_dialog,
@@ -23,6 +27,7 @@ watch(
         dialog.value = newValue;
         if (dialog.value) {
             form = useForm(oUsuario.value);
+            cargaListas();
         }
     }
 );
@@ -35,7 +40,12 @@ watch(
 
 const { flash } = usePage().props;
 
-const listTipos = ["ADMINISTRADOR", "SUPERVISOR DE ALMACEN", "ALMACENERO"];
+const listTipos = [
+    "GERENTE TÉCNICO",
+    "TÉCNICO SENIOR",
+    "TÉCNICO JUNIOR",
+    "TÉCNICO PASANTE",
+];
 const listExpedido = [
     { value: "LP", label: "La Paz" },
     { value: "CB", label: "Cochabamba" },
@@ -104,6 +114,19 @@ watch(dialog, (newVal) => {
     }
 });
 
+const cargaListas = async () => {
+    if (form.id && form.id != "") {
+        listPersonal.value = await getPersonals({
+            sin_usuario: true,
+            id: form.personal_id,
+        });
+    } else {
+        listPersonal.value = await getPersonals({
+            sin_usuario: true,
+        });
+    }
+};
+
 const cerrarDialog = () => {
     dialog.value = false;
 };
@@ -129,175 +152,36 @@ const cerrarDialog = () => {
                     <v-container>
                         <form>
                             <v-row>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
+                                <v-col cols="12" sm="6" md="6">
+                                    <v-autocomplete
                                         :hide-details="
-                                            form.errors?.nombre ? false : true
+                                            form.errors?.personal_id
+                                                ? false
+                                                : true
                                         "
                                         :error="
-                                            form.errors?.nombre ? true : false
+                                            form.errors?.personal_id
+                                                ? true
+                                                : false
                                         "
                                         :error-messages="
-                                            form.errors?.nombre
-                                                ? form.errors?.nombre
-                                                : ''
-                                        "
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Nombre*"
-                                        required
-                                        density="compact"
-                                        v-model="form.nombre"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.paterno ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.paterno ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.paterno
-                                                ? form.errors?.paterno
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Apellido Paterno*"
-                                        v-model="form.paterno"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.materno ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.materno ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.materno
-                                                ? form.errors?.materno
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Apellido Materno"
-                                        v-model="form.materno"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.ci ? false : true
-                                        "
-                                        :error="form.errors?.ci ? true : false"
-                                        :error-messages="
-                                            form.errors?.ci
-                                                ? form.errors?.ci
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="C.I.*"
-                                        v-model="form.ci"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-select
-                                        :hide-details="
-                                            form.errors?.ci_exp ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.ci_exp ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.ci_exp
-                                                ? form.errors?.ci_exp
+                                            form.errors?.personal_id
+                                                ? form.errors?.personal_id
                                                 : ''
                                         "
                                         density="compact"
                                         variant="underlined"
                                         color="blue"
                                         clearable
-                                        :items="listExpedido"
-                                        item-value="value"
-                                        item-title="label"
-                                        label="Expedido*"
-                                        v-model="form.ci_exp"
+                                        :items="listPersonal"
+                                        item-value="id"
+                                        item-title="full_name"
+                                        label="Seleccionar personal*"
+                                        v-model="form.personal_id"
                                         required
-                                    ></v-select>
+                                    ></v-autocomplete>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.dir ? false : true
-                                        "
-                                        :error="form.errors?.dir ? true : false"
-                                        :error-messages="
-                                            form.errors?.dir
-                                                ? form.errors?.dir
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Dirección*"
-                                        v-model="form.dir"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.correo ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.correo ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.correo
-                                                ? form.errors?.correo
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Correo"
-                                        v-model="form.email"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-text-field
-                                        :hide-details="
-                                            form.errors?.fono ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.fono ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.fono
-                                                ? form.errors?.fono
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        label="Teléfono/Celular*"
-                                        v-model="form.fono"
-                                        required
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="4">
+                                <v-col cols="12" sm="6" md="6">
                                     <v-select
                                         :hide-details="
                                             form.errors?.tipo ? false : true
@@ -320,35 +204,11 @@ const cerrarDialog = () => {
                                         required
                                     ></v-select>
                                 </v-col>
-                                <v-col cols="12" sm="6" md="4">
-                                    <v-file-input
-                                        :hide-details="
-                                            form.errors?.foto ? false : true
-                                        "
-                                        :error="
-                                            form.errors?.foto ? true : false
-                                        "
-                                        :error-messages="
-                                            form.errors?.foto
-                                                ? form.errors?.foto
-                                                : ''
-                                        "
-                                        density="compact"
-                                        variant="underlined"
-                                        color="blue"
-                                        accept="image/png, image/jpeg, image/bmp"
-                                        placeholder="Foto"
-                                        prepend-icon="mdi-camera"
-                                        label="Foto"
-                                        @change="cargaArchivo($event, 'foto')"
-                                        ref="foto"
-                                    ></v-file-input>
-                                </v-col>
                                 <v-col
                                     cols="12"
                                     sm="6"
-                                    md="4"
-                                    class="text-center d-flex justify-center align-center"
+                                    md="3"
+                                    class="text-right d-flex justify-center align-center mx-auto"
                                 >
                                     <div
                                         class="text-body-2 text-medium-emphasis mr-3"

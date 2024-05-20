@@ -18,8 +18,9 @@ return new class extends Migration
             $table->text("descripcion");
             $table->date("fecha");
             $table->time("hora");
-            $table->string("estado");
+            $table->string("estado")->default("PENDIENTE");
             $table->date("fecha_registro")->nullable();
+            $table->integer("status")->default(1);
             $table->timestamps();
 
             $table->foreign("cliente_id")->on("clientes")->references("id");

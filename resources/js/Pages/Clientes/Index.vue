@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Personal Técnico",
+        title: "Cliente Técnico",
         disabled: false,
         url: "",
         name_url: "",
@@ -18,11 +18,10 @@ const breadbrums = [
 import BreadBrums from "@/Components/BreadBrums.vue";
 import { useApp } from "@/composables/useApp";
 import { Head, usePage } from "@inertiajs/vue3";
-import { usePersonals } from "@/composables/personals/usePersonals";
+import { useClientes } from "@/composables/clientes/useClientes";
 import { ref, onMounted } from "vue";
 import { useMenu } from "@/composables/useMenu";
 import Formulario from "./Formulario.vue";
-import HojaVida from "./HojaVida.vue";
 const { mobile, identificaDispositivo } = useMenu();
 const { setLoading } = useApp();
 const { props } = usePage();
@@ -33,22 +32,22 @@ onMounted(() => {
     }, 300);
 });
 
-const { getPersonalsApi, setPersonal, limpiarPersonal, deletePersonal } =
-    usePersonals();
-const responsePersonals = ref([]);
-const listPersonals = ref([]);
+const { getClientesApi, setCliente, limpiarCliente, deleteCliente } =
+    useClientes();
+const responseClientes = ref([]);
+const listClientes = ref([]);
 const itemsPerPage = ref(5);
 const headers = ref([
     {
         title: "Id",
         align: "start",
     },
-    { title: "Nombre", align: "start", sortable: false },
-    { title: "C.I.", align: "start", sortable: false },
-    { title: "Especialidad", align: "start", sortable: false },
-    { title: "Domicilio", align: "start", sortable: false },
-    { title: "Celular", align: "start", sortable: false },
-    { title: "Foto", align: "start", sortable: false },
+    { title: "Razón Social", align: "start", sortable: false },
+    { title: "Tipo", align: "start", sortable: false },
+    { title: "Descripción", align: "start", sortable: false },
+    { title: "Nit", align: "start", sortable: false },
+    { title: "Dirección", align: "start", sortable: false },
+    { title: "Nivel de importancia", align: "start", sortable: false },
     { title: "Más", align: "start", sortable: false },
     { title: "Acción", align: "end", sortable: false },
 ]);
@@ -76,19 +75,19 @@ const loadItems = async ({ page, itemsPerPage, sortBy }) => {
 
     clearInterval(setTimeOutLoadData);
     setTimeOutLoadData = setTimeout(async () => {
-        responsePersonals.value = await getPersonalsApi(options.value);
-        listPersonals.value = responsePersonals.value.data;
-        totalItems.value = parseInt(responsePersonals.value.total);
+        responseClientes.value = await getClientesApi(options.value);
+        listClientes.value = responseClientes.value.data;
+        totalItems.value = parseInt(responseClientes.value.total);
         loading.value = false;
     }, 300);
 };
-const recargaPersonals = async () => {
+const recargaClientes = async () => {
     loading.value = true;
-    listPersonals.value = [];
+    listClientes.value = [];
     options.value.search = search.value;
-    responsePersonals.value = await getPersonalsApi(options.value);
-    listPersonals.value = responsePersonals.value.data;
-    totalItems.value = parseInt(responsePersonals.value.total);
+    responseClientes.value = await getClientesApi(options.value);
+    listClientes.value = responseClientes.value.data;
+    totalItems.value = parseInt(responseClientes.value.total);
     setTimeout(() => {
         loading.value = false;
         open_dialog.value = false;
@@ -96,28 +95,21 @@ const recargaPersonals = async () => {
 };
 const accion_dialog = ref(0);
 const open_dialog = ref(false);
-const accion_dialog_hv = ref(0);
-const open_dialog_hv = ref(false);
 
 const agregarRegistro = () => {
-    limpiarPersonal();
+    limpiarCliente();
     accion_dialog.value = 0;
     open_dialog.value = true;
 };
-const editarPersonal = (item) => {
-    setPersonal(item);
+const editarCliente = (item) => {
+    setCliente(item);
     accion_dialog.value = 1;
     open_dialog.value = true;
 };
-const verHojaVida = (item) => {
-    setPersonal(item, true);
-    accion_dialog_hv.value = 0;
-    open_dialog_hv.value = true;
-};
-const eliminarPersonal = (item) => {
+const eliminarCliente = (item) => {
     Swal.fire({
         title: "¿Quierés eliminar este registro?",
-        html: `<strong>${item.full_name}</strong>`,
+        html: `<strong>${item.razon_social}</strong>`,
         showCancelButton: true,
         confirmButtonColor: "#B61431",
         confirmButtonText: "Si, eliminar",
@@ -126,16 +118,16 @@ const eliminarPersonal = (item) => {
     }).then(async (result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-            let respuesta = await deletePersonal(item.id);
+            let respuesta = await deleteCliente(item.id);
             if (respuesta && respuesta.sw) {
-                recargaPersonals();
+                recargaClientes();
             }
         }
     });
 };
 </script>
 <template>
-    <Head title="Personals"></Head>
+    <Head title="Clientes"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row class="mt-0">
@@ -155,7 +147,7 @@ const eliminarPersonal = (item) => {
                     <v-card-title>
                         <v-row class="bg-blue d-flex align-center pa-3">
                             <v-col cols="12" sm="6" md="4">
-                                Personal Técnico
+                                Cliente Técnico
                             </v-col>
                             <v-col cols="12" sm="6" md="4" offset-md="4">
                                 <v-text-field
@@ -175,7 +167,7 @@ const eliminarPersonal = (item) => {
                             :headers="!mobile ? headers : []"
                             :class="[mobile ? 'mobile' : '']"
                             :items-length="totalItems"
-                            :items="listPersonals"
+                            :items="listClientes"
                             :loading="loading"
                             :search="search"
                             @update:options="loadItems"
@@ -200,25 +192,13 @@ const eliminarPersonal = (item) => {
                                     <tr>
                                         <td>{{ item.id }}</td>
                                         <td>
-                                            {{ item.full_name }}
+                                            {{ item.razon_social }}
                                         </td>
-                                        <td>{{ item.full_ci }}</td>
-                                        <td>{{ item.especialidad }}</td>
-                                        <td>{{ item.domicilio }}</td>
-                                        <td>{{ item.cel }}</td>
-                                        <td>
-                                            <v-avatar color="blue">
-                                                <v-img
-                                                    v-if="item.url_foto"
-                                                    :src="item.url_foto"
-                                                    cover
-                                                    :lazy-src="item.url_foto"
-                                                ></v-img>
-                                                <span v-else>{{
-                                                    item.iniciales_nombre
-                                                }}</span>
-                                            </v-avatar>
-                                        </td>
+                                        <td>{{ item.tipo }}</td>
+                                        <td>{{ item.descripcion }}</td>
+                                        <td>{{ item.nit }}</td>
+                                        <td>{{ item.dir }}</td>
+                                        <td>{{ item.nivel }}</td>
                                         <td>
                                             <v-btn
                                                 :icon="
@@ -233,25 +213,25 @@ const eliminarPersonal = (item) => {
                                             <v-btn
                                                 v-if="
                                                     props.auth.user.permisos.includes(
-                                                        'personals.edit'
+                                                        'clientes.edit'
                                                     )
                                                 "
                                                 color="yellow"
                                                 size="small"
                                                 class="pa-1 ma-1"
-                                                @click="editarPersonal(item)"
+                                                @click="editarCliente(item)"
                                                 icon="mdi-pencil"
                                             ></v-btn>
                                             <v-btn
                                                 v-if="
                                                     props.auth.user.permisos.includes(
-                                                        'personals.destroy'
+                                                        'clientes.destroy'
                                                     )
                                                 "
                                                 color="error"
                                                 size="small"
                                                 class="pa-1 ma-1"
-                                                @click="eliminarPersonal(item)"
+                                                @click="eliminarCliente(item)"
                                                 icon="mdi-trash-can"
                                             ></v-btn>
                                         </td>
@@ -270,10 +250,10 @@ const eliminarPersonal = (item) => {
                                                         <v-col
                                                             cols="12"
                                                             class="pb-0 text-caption font-weight-black"
-                                                            >Estado civil</v-col
+                                                            >Teléfono</v-col
                                                         >
                                                         <v-col cols="12">{{
-                                                            item.estado_civil
+                                                            item.fono
                                                         }}</v-col>
                                                     </v-row>
                                                 </v-col>
@@ -285,52 +265,11 @@ const eliminarPersonal = (item) => {
                                                         <v-col
                                                             cols="12"
                                                             class="pb-0 text-caption font-weight-black"
-                                                            >Fecha de
-                                                            Nacimiento</v-col
+                                                            >Correo</v-col
                                                         >
                                                         <v-col cols="12">{{
-                                                            item.fecha_nac_t
+                                                            item.correo
                                                         }}</v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col
-                                                    cols="3"
-                                                    class="text-center"
-                                                >
-                                                    <v-row>
-                                                        <v-col
-                                                            cols="12"
-                                                            class="pb-0 text-caption font-weight-black"
-                                                            >Record</v-col
-                                                        >
-                                                        <v-col cols="12">{{
-                                                            item.record
-                                                        }}</v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col
-                                                    cols="3"
-                                                    class="text-center"
-                                                >
-                                                    <v-row>
-                                                        <v-col
-                                                            cols="12"
-                                                            class="pb-0 text-caption font-weight-black"
-                                                            >Hoja de vida</v-col
-                                                        >
-                                                        <v-col cols="12">
-                                                            <v-btn
-                                                                color="primary"
-                                                                size="small"
-                                                                class="pa-1 ma-1"
-                                                                @click="
-                                                                    verHojaVida(
-                                                                        item
-                                                                    )
-                                                                "
-                                                                icon="mdi-file-account-outline"
-                                                            ></v-btn>
-                                                        </v-col>
                                                     </v-row>
                                                 </v-col>
                                                 <v-col
@@ -365,51 +304,39 @@ const eliminarPersonal = (item) => {
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="Nombre:"
+                                                    data-label="Razón Social:"
                                                 >
-                                                    {{ item.full_name }}
+                                                    {{ item.razon_social }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="C.I.:"
+                                                    data-label="Tipo:"
                                                 >
-                                                    {{ item.full_ci }}
+                                                    {{ item.tipo }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="Especialidad:"
+                                                    data-label="Descripción:"
                                                 >
-                                                    {{ item.especialidad }}
+                                                    {{ item.descripcion }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="Domicilio:"
+                                                    data-label="Nit:"
                                                 >
-                                                    {{ item.domicilio }}
+                                                    {{ item.nit }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="Celular:"
+                                                    data-label="Dirección:"
                                                 >
-                                                    {{ item.cel }}
+                                                    {{ item.dir }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
-                                                    data-label="Foto:"
+                                                    data-label="Nivel de importancia:"
                                                 >
-                                                    <v-avatar color="blue">
-                                                        <v-img
-                                                            v-if="item.url_foto"
-                                                            :src="item.url_foto"
-                                                            cover
-                                                            :lazy-src="
-                                                                item.url_foto
-                                                            "
-                                                        ></v-img>
-                                                        <span v-else>{{
-                                                            item.iniciales_nombre
-                                                        }}</span>
-                                                    </v-avatar>
+                                                    {{ item.nivel }}
                                                 </li>
                                                 <li
                                                     class="flex-item"
@@ -429,27 +356,15 @@ const eliminarPersonal = (item) => {
                                                 <template v-if="item.mas">
                                                     <li
                                                         class="flex-item"
-                                                        data-label="Estado civil:"
+                                                        data-label="Teléfono:"
                                                     >
-                                                        {{ item.estado_civil }}
+                                                        {{ item.fono }}
                                                     </li>
                                                     <li
                                                         class="flex-item"
-                                                        data-label="Fecha de Nacimiento:"
+                                                        data-label="Correo:"
                                                     >
-                                                        {{ item.fecha_nac }}
-                                                    </li>
-                                                    <li
-                                                        class="flex-item"
-                                                        data-label="Record:"
-                                                    >
-                                                        {{ item.record }}
-                                                    </li>
-                                                    <li
-                                                        class="flex-item"
-                                                        data-label="Hoja de vida"
-                                                    >
-                                                        {{ item.hoja_vida }}
+                                                        {{ item.correo }}
                                                     </li>
                                                     <li
                                                         class="flex-item"
@@ -466,40 +381,31 @@ const eliminarPersonal = (item) => {
                                                     cols="12"
                                                     class="text-center pa-5"
                                                 >
-                                                    <!-- <v-btn
-                                                        color="primary"
-                                                        size="small"
-                                                        class="pa-1 ma-1"
-                                                        @click="
-                                                            verUbicación(item)
-                                                        "
-                                                        icon="mdi-map-marker"
-                                                    ></v-btn> -->
                                                     <v-btn
                                                         v-if="
                                                             props.auth.user.permisos.includes(
-                                                                'personals.edit'
+                                                                'clientes.edit'
                                                             )
                                                         "
                                                         color="yellow"
                                                         size="small"
                                                         class="pa-1 ma-1"
                                                         @click="
-                                                            editarPersonal(item)
+                                                            editarCliente(item)
                                                         "
                                                         icon="mdi-pencil"
                                                     ></v-btn>
                                                     <v-btn
                                                         v-if="
                                                             props.auth.user.permisos.includes(
-                                                                'personals.destroy'
+                                                                'clientes.destroy'
                                                             )
                                                         "
                                                         color="error"
                                                         size="small"
                                                         class="pa-1 ma-1"
                                                         @click="
-                                                            eliminarPersonal(
+                                                            eliminarCliente(
                                                                 item
                                                             )
                                                         "
@@ -519,13 +425,8 @@ const eliminarPersonal = (item) => {
         <Formulario
             :open_dialog="open_dialog"
             :accion_dialog="accion_dialog"
-            @envio-formulario="recargaPersonals"
+            @envio-formulario="recargaClientes"
             @cerrar-dialog="open_dialog = false"
         ></Formulario>
-        <HojaVida
-            :open_dialog="open_dialog_hv"
-            :accion_dialog="accion_dialog_hv"
-            @cerrar-dialog="open_dialog_hv = false"
-        ></HojaVida>
     </v-container>
 </template>

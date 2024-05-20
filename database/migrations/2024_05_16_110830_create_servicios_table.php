@@ -34,6 +34,7 @@ return new class extends Migration
             $table->text("partes");
             $table->string("tipo_trabajo");
             $table->date("fecha_registro")->nullable();
+            $table->integer("status")->default(1);
             $table->timestamps();
 
             $table->foreign("cliente_id")->on("clientes")->references("id");

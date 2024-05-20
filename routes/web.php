@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AvanceObraController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\MaquinariaController;
 use App\Http\Controllers\MaterialController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\SolicitudAtencionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Foundation\Application;
@@ -93,6 +95,19 @@ Route::middleware('auth')->group(function () {
         ["index", "store", "update", "show", "destroy"]
     );
 
+    // CLIENTES
+    Route::get("/clientes/paginado", [ClienteController::class, 'paginado'])->name("clientes.paginado");
+    Route::get("/clientes/listado", [ClienteController::class, 'listado'])->name("clientes.listado");
+    Route::resource("clientes", ClienteController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
+
+    // SOLICITUD DE ANTENCIÓN
+    Route::get("/solicitud_atencions/paginado", [SolicitudAtencionController::class, 'paginado'])->name("solicitud_atencions.paginado");
+    Route::get("/solicitud_atencions/listado", [SolicitudAtencionController::class, 'listado'])->name("solicitud_atencions.listado");
+    Route::resource("solicitud_atencions", SolicitudAtencionController::class)->only(
+        ["index", "store", "update", "show", "destroy"]
+    );
 
     // REPORTES
     Route::get('reportes/usuarios', [ReporteController::class, 'usuarios'])->name("reportes.usuarios");

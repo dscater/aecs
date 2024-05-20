@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('hoja_vida', 255)->nullable();
             $table->string('foto', 255)->nullable();
             $table->date("fecha_registro");
+            $table->integer("status")->default(1);
             $table->timestamps();
         });
     }

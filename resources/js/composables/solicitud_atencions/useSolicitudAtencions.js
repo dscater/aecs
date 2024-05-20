@@ -2,36 +2,28 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
-const oPersonal = ref({
+const oSolicitudAtencion = ref({
     id: 0,
-    nombre: "",
-    paterno: "",
-    materno: "",
-    ci: "",
-    ci_exp: "",
-    estado_civil: "",
-    fecha_nac: "",
-    cel: "",
-    domicilio: "",
-    especialidad: "",
-    record: "",
-    hoja_vida: "",
-    foto: "",
-    // appends
-    url_hoja_vida: "",
-    url_foto: "",
+    cliente_id: null,
+    personal_id: null,
+    descripcion: "",
+    fecha: "",
+    hora: "",
     _method: "POST",
 });
 
-export const usePersonals = () => {
+export const useSolicitudAtencions = () => {
     const { flash } = usePage().props;
-    const getPersonals = async (data) => {
+    const getSolicitudAtencions = async (data) => {
         try {
-            const response = await axios.get(route("personals.listado"), {
-                headers: { Accept: "application/json" },
-                params: data,
-            });
-            return response.data.personals;
+            const response = await axios.get(
+                route("solicitud_atencions.listado"),
+                {
+                    headers: { Accept: "application/json" },
+                    params: data,
+                }
+            );
+            return response.data.solicitud_atencions;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -50,15 +42,15 @@ export const usePersonals = () => {
         }
     };
 
-    const getPersonalsApi = async (data) => {
+    const getSolicitudAtencionsApi = async (data) => {
         try {
             const response = await axios.get(
-                route("personals.paginado", data),
+                route("solicitud_atencions.paginado", data),
                 {
                     headers: { Accept: "application/json" },
                 }
             );
-            return response.data.personals;
+            return response.data.solicitud_atencions;
         } catch (err) {
             Swal.fire({
                 icon: "error",
@@ -76,11 +68,14 @@ export const usePersonals = () => {
             throw err; // Puedes manejar el error según tus necesidades
         }
     };
-    const savePersonal = async (data) => {
+    const saveSolicitudAtencion = async (data) => {
         try {
-            const response = await axios.post(route("personals.store", data), {
-                headers: { Accept: "application/json" },
-            });
+            const response = await axios.post(
+                route("solicitud_atencions.store", data),
+                {
+                    headers: { Accept: "application/json" },
+                }
+            );
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -108,10 +103,10 @@ export const usePersonals = () => {
         }
     };
 
-    const deletePersonal = async (id) => {
+    const deleteSolicitudAtencion = async (id) => {
         try {
             const response = await axios.delete(
-                route("personals.destroy", id),
+                route("solicitud_atencions.destroy", id),
                 {
                     headers: { Accept: "application/json" },
                 }
@@ -142,58 +137,39 @@ export const usePersonals = () => {
         }
     };
 
-    const setPersonal = (item = null, hoja_vida = false) => {
+    const setSolicitudAtencion = (item = null) => {
         if (item) {
-            oPersonal.value.id = item.id;
-            oPersonal.value.nombre = item.nombre;
-            oPersonal.value.paterno = item.paterno;
-            oPersonal.value.materno = item.materno;
-            oPersonal.value.ci = item.ci;
-            oPersonal.value.ci_exp = item.ci_exp;
-            oPersonal.value.estado_civil = item.estado_civil;
-            oPersonal.value.fecha_nac = item.fecha_nac;
-            oPersonal.value.cel = item.cel;
-            oPersonal.value.domicilio = item.domicilio;
-            oPersonal.value.especialidad = item.especialidad;
-            oPersonal.value.record = item.record;
-            oPersonal.value.hoja_vida = item.hoja_vida;
-            oPersonal.value.foto = item.foto;
-            if (hoja_vida) {
-                oPersonal.value.url_hoja_vida = item.url_hoja_vida;
-            }
-            oPersonal.value._method = "PUT";
-            return oPersonal;
+            oSolicitudAtencion.value.id = item.id;
+            oSolicitudAtencion.value.cliente_id = item.cliente_id;
+            oSolicitudAtencion.value.personal_id = item.personal_id;
+            oSolicitudAtencion.value.descripcion = item.descripcion;
+            oSolicitudAtencion.value.fecha = item.fecha;
+            oSolicitudAtencion.value.hora = item.hora;
+            oSolicitudAtencion.value._method = "PUT";
+            return oSolicitudAtencion;
         }
         return false;
     };
 
-    const limpiarPersonal = () => {
-        oPersonal.value.id = 0;
-        oPersonal.value.nombre = "";
-        oPersonal.value.paterno = "";
-        oPersonal.value.materno = "";
-        oPersonal.value.ci = "";
-        oPersonal.value.ci_exp = "";
-        oPersonal.value.estado_civil = "";
-        oPersonal.value.fecha_nac = "";
-        oPersonal.value.cel = "";
-        oPersonal.value.domicilio = "";
-        oPersonal.value.especialidad = "";
-        oPersonal.value.record = "";
-        oPersonal.value.hoja_vida = "";
-        oPersonal.value.foto = "";
-        oPersonal.value._method = "POST";
+    const limpiarSolicitudAtencion = () => {
+        oSolicitudAtencion.value.id = 0;
+        oSolicitudAtencion.value.cliente_id = null;
+        oSolicitudAtencion.value.personal_id = null;
+        oSolicitudAtencion.value.descripcion = "";
+        oSolicitudAtencion.value.fecha = "";
+        oSolicitudAtencion.value.hora = "";
+        oSolicitudAtencion.value._method = "POST";
     };
 
     onMounted(() => {});
 
     return {
-        oPersonal,
-        getPersonals,
-        getPersonalsApi,
-        savePersonal,
-        deletePersonal,
-        setPersonal,
-        limpiarPersonal,
+        oSolicitudAtencion,
+        getSolicitudAtencions,
+        getSolicitudAtencionsApi,
+        saveSolicitudAtencion,
+        deleteSolicitudAtencion,
+        setSolicitudAtencion,
+        limpiarSolicitudAtencion,
     };
 };

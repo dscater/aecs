@@ -24,9 +24,10 @@ class Personal extends Model
         "hoja_vida",
         "foto",
         "fecha_registro",
+        "status",
     ];
 
-    protected $appends = ["fecha_registro_t", "full_name","iniciales_nombre", "full_ci", "url_foto", "fecha_nac_t", "url_hoja_vida"];
+    protected $appends = ["fecha_registro_t", "full_name", "iniciales_nombre", "full_ci", "url_foto", "fecha_nac_t", "url_hoja_vida"];
 
     public function getFechaRegistroTAttribute()
     {

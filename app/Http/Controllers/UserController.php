@@ -48,8 +48,9 @@ class UserController extends Controller
 
             "reportes.usuarios",
         ],
-        "SUPERVISOR DE ALMACEN" => [],
-        "ALMACENERO" => [],
+        "TÉCNICO SENIOR" => [],
+        "TÉCNICO JUNIOR" => [],
+        "TÉCNICO PASANTE" => [],
     ];
 
     public static function getPermisosUser()

@@ -44,9 +44,29 @@ class PersonalController extends Controller
         return Inertia::render("Personals/Index");
     }
 
-    public function listado()
+    public function listado(Request $request)
     {
-        $personals = Personal::select("personals.*")->get();
+        $personals = Personal::select("personals.*")->where("status", 1);
+
+        if ($request->sin_usuario) {
+            if ($request->id && $request->id != '') {
+                $personals = $personals->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('users')
+                        ->whereRaw('users.personal_id = personals.id');
+                })->orWhere(function ($subquery) use ($request) {
+                    $subquery->whereIn('personals.id', [$request->id]);
+                });
+            } else {
+                $personals = $personals->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('users')
+                        ->whereRaw('users.personal_id = personals.id');
+                });
+            }
+        }
+
+        $personals = $personals->get();
         return response()->JSON([
             "personals" => $personals
         ]);
@@ -55,7 +75,7 @@ class PersonalController extends Controller
     public function paginado(Request $request)
     {
         $search = $request->search;
-        $personals = Personal::select("personals.*");
+        $personals = Personal::select("personals.*")->where("status", 1);
 
         if (trim($search) != "") {
             $personals->where("nombre", "LIKE", "%$search%");
@@ -183,16 +203,17 @@ class PersonalController extends Controller
     {
         DB::beginTransaction();
         try {
-            $antiguo = $personal->foto;
-            if ($antiguo != 'default.png') {
-                \File::delete(public_path() . '/imgs/personals/' . $antiguo);
-            }
-            $antiguo = $personal->hoja_vida;
-            if ($antiguo) {
-                \File::delete(public_path() . '/files/' . $antiguo);
-            }
+            // $antiguo = $personal->foto;
+            // if ($antiguo != 'default.png') {
+            //     \File::delete(public_path() . '/imgs/personals/' . $antiguo);
+            // }
+            // $antiguo = $personal->hoja_vida;
+            // if ($antiguo) {
+            //     \File::delete(public_path() . '/files/' . $antiguo);
+            // }
             $datos_original = HistorialAccion::getDetalleRegistro($personal, "personals");
-            $personal->delete();
+            $personal->status = 0;
+            $personal->save();
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'ELIMINACIÓN',

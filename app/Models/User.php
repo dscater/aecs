@@ -22,14 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         "usuario",
         "password",
-        "nombre",
-        "paterno",
-        "materno",
-        "ci",
-        "ci_exp",
-        "dir",
-        "email",
-        "fono",
+        "personal_id",
         "tipo",
         "foto",
         "acceso",
@@ -87,7 +80,7 @@ class User extends Authenticatable
     public function getUrlFotoAttribute()
     {
         if ($this->foto) {
-            return asset("imgs/users/" . $this->foto);
+            return asset("imgs/personals/" . $this->foto);
         }
         return null;
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string("correo", 255)->nullable();
             $table->string("nivel", 255)->nullable();
             $table->date("fecha_registro")->nullable();
+            $table->integer("status")->default(1);
             $table->timestamps();
         });
     }
