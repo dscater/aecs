@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('servicios', function (Blueprint $table) {
             $table->id();
             $table->string("cod")->unique();
+            $table->bigInteger("nro")->unique();
             $table->unsignedBigInteger("cliente_id");
             $table->unsignedBigInteger("personal_id");
             $table->date("fecha");

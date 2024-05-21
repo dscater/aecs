@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 20-05-2024 a las 21:22:20
+-- Tiempo de generación: 21-05-2024 a las 21:35:09
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -122,7 +122,12 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (15, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SOLICITUD DE ATENCIÓN', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 17:00<br/>estado: <br/>fecha_registro: 2024-05-20<br/>status: <br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:17:40<br/>', NULL, 'SOLICITUD DE ATENCIÓN', '2024-05-20', '17:17:40', '2024-05-20 21:17:40', '2024-05-20 21:17:40'),
 (16, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SOLICITUD DE ATENCIÓN', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 17:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:17:40<br/>', 'id: 1<br/>cliente_id: 2<br/>personal_id: 2<br/>descripcion: DESCRIPCION SOLICITUD #1A<br/>fecha: 2024-05-19<br/>hora: 16:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:12<br/>', 'SOLICITUD DE ATENCIÓN', '2024-05-20', '17:18:12', '2024-05-20 21:18:12', '2024-05-20 21:18:12'),
 (17, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SOLICITUD DE ATENCIÓN', 'id: 1<br/>cliente_id: 2<br/>personal_id: 2<br/>descripcion: DESCRIPCION SOLICITUD #1A<br/>fecha: 2024-05-19<br/>hora: 16:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:12<br/>', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 16:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:24<br/>', 'SOLICITUD DE ATENCIÓN', '2024-05-20', '17:18:24', '2024-05-20 21:18:24', '2024-05-20 21:18:24'),
-(18, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SOLICITUD DE ATENCIÓN', 'id: 2<br/>cliente_id: 2<br/>personal_id: 2<br/>descripcion: DESC. SOL. #2<br/>fecha: 2024-05-20<br/>hora: 17:20<br/>estado: <br/>fecha_registro: 2024-05-20<br/>status: <br/>created_at: 2024-05-20 17:21:45<br/>updated_at: 2024-05-20 17:21:45<br/>', NULL, 'SOLICITUD DE ATENCIÓN', '2024-05-20', '17:21:45', '2024-05-20 21:21:45', '2024-05-20 21:21:45');
+(18, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SOLICITUD DE ATENCIÓN', 'id: 2<br/>cliente_id: 2<br/>personal_id: 2<br/>descripcion: DESC. SOL. #2<br/>fecha: 2024-05-20<br/>hora: 17:20<br/>estado: <br/>fecha_registro: 2024-05-20<br/>status: <br/>created_at: 2024-05-20 17:21:45<br/>updated_at: 2024-05-20 17:21:45<br/>', NULL, 'SOLICITUD DE ATENCIÓN', '2024-05-20', '17:21:45', '2024-05-20 21:21:45', '2024-05-20 21:21:45'),
+(19, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SERVICIO', 'id: 1<br/>cod: SER1<br/>nro: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>fecha: 2024-05-21<br/>hora_ini: 08:15<br/>hora_fin: 12:15<br/>total_horas: 4.00<br/>ubicacion: UBICACIÓN SERV. 1<br/>tipo: TIPO #1<br/>marca: MARCA #1<br/>modelo: MODELO #1<br/>nro_serie: NRO SERIE #1<br/>nro_parte: <br/>nro_activo: NRO ACTIVO #1<br/>tipo_servicio: GARANTÍA<br/>foto: 1716307469_1.png<br/>problema: PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1<br/>trabajo_realizado: TRABAJO REALIZADO EN EL SERVICIO #1.<br/>partes: PARTES UTILIZADAS EN EL SERVICIO #1<br/>tipo_trabajo: MANTENIMIENTO PREVENTIVO<br/>fecha_registro: 2024-05-21<br/>status: <br/>created_at: 2024-05-21 12:04:29<br/>updated_at: 2024-05-21 12:04:29<br/>', NULL, 'SERVICIOS', '2024-05-21', '12:04:29', '2024-05-21 16:04:29', '2024-05-21 16:04:29'),
+(20, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SERVICIO', 'id: 1<br/>cod: SER1<br/>nro: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>fecha: 2024-05-21<br/>hora_ini: 08:15:00<br/>hora_fin: 12:15:00<br/>total_horas: 4<br/>ubicacion: UBICACIÓN SERV. 1<br/>tipo: TIPO #1<br/>marca: MARCA #1<br/>modelo: MODELO #1<br/>nro_serie: NRO SERIE #1<br/>nro_parte: <br/>nro_activo: NRO ACTIVO #1<br/>tipo_servicio: GARANTÍA<br/>foto: 1716307469_1.png<br/>problema: PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1<br/>trabajo_realizado: TRABAJO REALIZADO EN EL SERVICIO #1.<br/>partes: PARTES UTILIZADAS EN EL SERVICIO #1<br/>tipo_trabajo: MANTENIMIENTO PREVENTIVO<br/>fecha_registro: 2024-05-21<br/>status: 1<br/>created_at: 2024-05-21 12:04:29<br/>updated_at: 2024-05-21 12:04:29<br/>', 'id: 1<br/>cod: SER1<br/>nro: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>fecha: 2024-05-21<br/>hora_ini: 08:15:00<br/>hora_fin: 12:15:00<br/>total_horas: 4<br/>ubicacion: UBICACIÓN SERV. 1<br/>tipo: TIPO #1<br/>marca: MARCA #1<br/>modelo: MODELO #1<br/>nro_serie: NRO SERIE #1<br/>nro_parte: NRO PARTE #1<br/>nro_activo: NRO ACTIVO #1<br/>tipo_servicio: GARANTÍA<br/>foto: 1716307469_1.png<br/>problema: PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1<br/>trabajo_realizado: TRABAJO REALIZADO EN EL SERVICIO #1.<br/>partes: PARTES UTILIZADAS EN EL SERVICIO #1<br/>tipo_trabajo: MANTENIMIENTO PREVENTIVO<br/>fecha_registro: 2024-05-21<br/>status: 1<br/>created_at: 2024-05-21 12:04:29<br/>updated_at: 2024-05-21 12:06:44<br/>', 'SERVICIOS', '2024-05-21', '12:06:44', '2024-05-21 16:06:44', '2024-05-21 16:06:44'),
+(21, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SERVICIO', 'id: 2<br/>cod: SER.2<br/>nro: 2<br/>cliente_id: 2<br/>personal_id: 2<br/>fecha: 2024-05-21<br/>hora_ini: 10:00<br/>hora_fin: 14:15<br/>total_horas: 4.25<br/>ubicacion: UBICACION SERV. #2<br/>tipo: <br/>marca: <br/>modelo: <br/>nro_serie: <br/>nro_parte: <br/>nro_activo: <br/>tipo_servicio: CONTRATO<br/>foto: <br/>problema: PROBLEMA REPORTADO EN EL SERVICIO #2<br/>trabajo_realizado: TRABAJOS REALIZADOS ENE L SERVICIO #2<br/>partes: <br/>tipo_trabajo: MANTENIMIENTO CORRECTIVO<br/>fecha_registro: 2024-05-21<br/>status: <br/>created_at: 2024-05-21 12:09:43<br/>updated_at: 2024-05-21 12:09:43<br/>', NULL, 'SERVICIOS', '2024-05-21', '12:09:43', '2024-05-21 16:09:43', '2024-05-21 16:09:43'),
+(22, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 1<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-20 15:32:44<br/>', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 0<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:27<br/>', 'USUARIOS', '2024-05-21', '12:31:27', '2024-05-21 16:31:27', '2024-05-21 16:31:27'),
+(23, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 0<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:27<br/>', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 1<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:30<br/>', 'USUARIOS', '2024-05-21', '12:31:30', '2024-05-21 16:31:30', '2024-05-21 16:31:30');
 
 -- --------------------------------------------------------
 
@@ -213,6 +218,7 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `servicios` (
   `id` bigint UNSIGNED NOT NULL,
   `cod` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nro` bigint NOT NULL,
   `cliente_id` bigint UNSIGNED NOT NULL,
   `personal_id` bigint UNSIGNED NOT NULL,
   `fecha` date NOT NULL,
@@ -237,6 +243,14 @@ CREATE TABLE `servicios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `servicios`
+--
+
+INSERT INTO `servicios` (`id`, `cod`, `nro`, `cliente_id`, `personal_id`, `fecha`, `hora_ini`, `hora_fin`, `total_horas`, `ubicacion`, `tipo`, `marca`, `modelo`, `nro_serie`, `nro_parte`, `nro_activo`, `tipo_servicio`, `foto`, `problema`, `trabajo_realizado`, `partes`, `tipo_trabajo`, `fecha_registro`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'SER.1', 1, 1, 1, '2024-05-21', '08:15:00', '12:15:00', 4, 'UBICACIÓN SERV. 1', 'TIPO #1', 'MARCA #1', 'MODELO #1', 'NRO SERIE #1', 'NRO PARTE #1', 'NRO ACTIVO #1', 'GARANTÍA', '1716307469_1.png', 'PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1', 'TRABAJO REALIZADO EN EL SERVICIO #1.', 'PARTES UTILIZADAS EN EL SERVICIO #1', 'MANTENIMIENTO PREVENTIVO', '2024-05-21', 1, '2024-05-21 16:04:29', '2024-05-21 16:06:44'),
+(2, 'SER.2', 2, 2, 2, '2024-05-21', '10:00:00', '14:15:00', 4.25, 'UBICACION SERV. #2', '', '', '', '', '', '', 'CONTRATO', NULL, 'PROBLEMA REPORTADO EN EL SERVICIO #2', 'TRABAJOS REALIZADOS ENE L SERVICIO #2', '', 'MANTENIMIENTO CORRECTIVO', '2024-05-21', 1, '2024-05-21 16:09:43', '2024-05-21 16:09:43');
 
 -- --------------------------------------------------------
 
@@ -291,7 +305,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `personal_id`, `usuario`, `password`, `tipo`, `acceso`, `foto`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'admin', '$2y$12$9I.ZrE/7q.PdqX5QlNKXDOLOUaiaPdkttXTIm7Z2KWajmoaEc4ahe', 'GERENTE TÉCNICO', 1, NULL, '2024-05-13', '2024-05-13 18:36:25', '2024-05-13 18:36:25'),
-(2, 1, 'JPERES', '$2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2', 'TÉCNICO SENIOR', 1, '1715897155_1.jpg', '2024-05-20', '2024-05-20 19:32:44', '2024-05-20 19:32:44');
+(2, 1, 'JPERES', '$2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2', 'TÉCNICO SENIOR', 1, '1715897155_1.jpg', '2024-05-20', '2024-05-20 19:32:44', '2024-05-21 16:31:30');
 
 --
 -- Índices para tablas volcadas
@@ -380,7 +394,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -404,7 +418,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud_atencions`

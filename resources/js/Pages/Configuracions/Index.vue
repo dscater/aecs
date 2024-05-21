@@ -121,7 +121,7 @@ function limpiaRefs() {
                         <v-row>
                             <v-col cols="12" md="3" class="text-center mx-auto">
                                 <v-card variant="flat" color="blue-lighten-1">
-                                    <v-car-text>
+                                    <v-card-text>
                                         <v-img
                                             cover
                                             v-if="configuracion.url_logo"
@@ -146,7 +146,7 @@ function limpiaRefs() {
 
                                         {{ configuracion.ciudad }}<br />
                                         {{ configuracion.dir }}
-                                    </v-car-text>
+                                    </v-card-text>
                                 </v-card>
                             </v-col>
                         </v-row>

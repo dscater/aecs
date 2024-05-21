@@ -47,6 +47,11 @@ class UserController extends Controller
             "configuracions.destroy",
 
             "reportes.usuarios",
+            "reportes.inventario_equipos",
+            "reportes.servicios",
+            "reportes.hora_servicios",
+            "reportes.solicitud_atencion",
+            "reportes.personal",
         ],
         "TÉCNICO SENIOR" => [],
         "TÉCNICO JUNIOR" => [],

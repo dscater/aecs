@@ -134,7 +134,7 @@ const eliminarSolicitudAtencion = (item) => {
 };
 </script>
 <template>
-    <Head title="SolicitudAtencions"></Head>
+    <Head title="Solicitud de Atención"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row class="mt-0">

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Obra;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,13 +21,17 @@ class ReporteController extends Controller
     public function r_usuarios(Request $request)
     {
         $tipo =  $request->tipo;
-        $usuarios = User::where('id', '!=', 1)->orderBy("paterno", "ASC")->get();
+        $usuarios = User::join("personals", "personals.id", "=", "users.personal_id")
+            ->where("personals.status", 1)
+            ->orderBy("paterno", "ASC")->get();
 
         if ($tipo != 'TODOS') {
             $request->validate([
                 'tipo' => 'required',
             ]);
-            $usuarios = User::where('id', '!=', 1)->where('tipo', $request->tipo)->orderBy("paterno", "ASC")->get();
+            $usuarios = User::join("personals", "personals.id", "=", "users.personal_id")
+                ->where("personals.status", 1)
+                ->where('tipo', $request->tipo)->orderBy("paterno", "ASC")->get();
         }
 
         $pdf = PDF::loadView('reportes.usuarios', compact('usuarios'))->setPaper('legal', 'landscape');
@@ -41,32 +47,24 @@ class ReporteController extends Controller
         return $pdf->stream('usuarios.pdf');
     }
 
-    public function presupuestos()
+    public function inventario_equipos()
     {
-        return Inertia::render("Reportes/Presupuestos");
+        return Inertia::render("Reportes/InventarioEquipos");
     }
 
-    public function r_presupuestos(Request $request)
+    public function r_inventario_equipos(Request $request)
     {
-        $obra_id =  $request->obra_id;
-        if (Auth::user()->tipo == 'GERENTE REGIONAL' || Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-                $obras = Obra::where("gerente_regional_id", Auth::user()->id)->get();
-            } else {
-                $obras = Obra::where("encargado_obra_id", Auth::user()->id)->get();
-            }
-        } else {
-            $obras = Obra::all();
+        $servicio_id =  $request->servicio_id;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+
+        $servicios = Servicio::whereBetween("fecha", [$fecha_fin, $fecha_fin])->get();
+
+        if ($servicio_id != 'todos') {
+            $servicios = Servicio::where("id", $servicio_id)->get();
         }
 
-        if ($obra_id != 'TODOS') {
-            $request->validate([
-                'obra_id' => 'required',
-            ]);
-            $obras = Obra::where('id', 1)->get();
-        }
-
-        $pdf = PDF::loadView('reportes.presupuestos', compact('obras'))->setPaper('letter', 'portrait');
+        $pdf = PDF::loadView('reportes.inventario_equipos', compact('servicios'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
@@ -76,35 +74,36 @@ class ReporteController extends Controller
         $ancho = $canvas->get_width();
         $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
-        return $pdf->stream('presupuestos.pdf');
+        return $pdf->stream('inventario_equipos.pdf');
     }
 
-    public function operarios()
+    public function servicios()
     {
-        return Inertia::render("Reportes/Operarios");
+        return Inertia::render("Reportes/Servicios");
     }
 
-    public function r_operarios(Request $request)
+    public function r_servicios(Request $request)
     {
-        $obra_id =  $request->obra_id;
-        if (Auth::user()->tipo == 'GERENTE REGIONAL' || Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-                $obras = Obra::where("gerente_regional_id", Auth::user()->id)->get();
-            } else {
-                $obras = Obra::where("encargado_obra_id", Auth::user()->id)->get();
-            }
-        } else {
-            $obras = Obra::all();
+        $cliente_id =  $request->cliente_id;
+        $tipo_servicio =  $request->tipo_servicio;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+
+        $servicios = Servicio::select("servicios.*");
+
+        if ($cliente_id != 'todos') {
+            $servicios->where("cliente_id", $cliente_id);
         }
 
-        if ($obra_id != 'TODOS') {
-            $request->validate([
-                'obra_id' => 'required',
-            ]);
-            $obras = Obra::where('id', 1)->get();
+        if ($tipo_servicio != 'todos') {
+            $servicios->where("tipo_servicio", $tipo_servicio);
         }
 
-        $pdf = PDF::loadView('reportes.operarios', compact('obras'))->setPaper('letter', 'portrait');
+        $servicios->whereBetween("fecha", [$fecha_ini, $fecha_fin]);
+
+        $servicios = $servicios->get();
+
+        $pdf = PDF::loadView('reportes.servicios', compact('servicios'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
@@ -114,115 +113,167 @@ class ReporteController extends Controller
         $ancho = $canvas->get_width();
         $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
-        return $pdf->stream('operarios.pdf');
+        return $pdf->stream('servicios.pdf');
     }
 
-    public function obras()
+    public function rg_servicios(Request $request)
     {
-        return Inertia::render("Reportes/Obras");
-    }
+        $cliente_id =  $request->cliente_id;
+        $tipo_servicio =  $request->tipo_servicio;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
 
-    public function r_obras(Request $request)
-    {
-        $obra_id =  $request->obra_id;
-        if (Auth::user()->tipo == 'GERENTE REGIONAL' || Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-                $obras = Obra::where("gerente_regional_id", Auth::user()->id)->get();
-            } else {
-                $obras = Obra::where("encargado_obra_id", Auth::user()->id)->get();
-            }
-        } else {
-            $obras = Obra::all();
+        $tipo_servicios = ["GARANTÍA", "CONTRATO", "FACTURAR", "SOPORTE", "RELEVAMIENTO", "OTROS"];
+
+        if ($tipo_servicio != 'todos') {
+            $tipo_servicios = [$tipo_servicio];
         }
 
-        if ($obra_id != 'TODOS') {
-            $request->validate([
-                'obra_id' => 'required',
-            ]);
-            $obras = Obra::where('id', 1)->get();
-        }
-
-        $pdf = PDF::loadView('reportes.obras', compact('obras'))->setPaper('letter', 'landscape');
-
-        // ENUMERAR LAS PÁGINAS USANDO CANVAS
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $alto = $canvas->get_height();
-        $ancho = $canvas->get_width();
-        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
-
-        return $pdf->stream('obras.pdf');
-    }
-
-    public function avance_obras()
-    {
-        return Inertia::render("Reportes/AvanceObras");
-    }
-
-    public function r_avance_obras(Request $request)
-    {
-        $obra_id =  $request->obra_id;
-        if (Auth::user()->tipo == 'GERENTE REGIONAL' || Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-                $obras = Obra::where("gerente_regional_id", Auth::user()->id)->get();
-            } else {
-                $obras = Obra::where("encargado_obra_id", Auth::user()->id)->get();
-            }
-        } else {
-            $obras = Obra::all();
-        }
-
-        if ($obra_id != 'TODOS') {
-            $request->validate([
-                'obra_id' => 'required',
-            ]);
-            $obras = Obra::where('id', 1)->get();
-        }
-
-        $pdf = PDF::loadView('reportes.avance_obras', compact('obras'))->setPaper('letter', 'portrait');
-
-        // ENUMERAR LAS PÁGINAS USANDO CANVAS
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $alto = $canvas->get_height();
-        $ancho = $canvas->get_width();
-        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
-
-        return $pdf->stream('avance_obras.pdf');
-    }
-
-    public function g_avance_obras(Request $request)
-    {
-        $obra_id =  $request->obra_id;
-        if (Auth::user()->tipo == 'GERENTE REGIONAL' || Auth::user()->tipo == 'ENCARGADO DE OBRA') {
-            if (Auth::user()->tipo == 'GERENTE REGIONAL') {
-                $obras = Obra::where("gerente_regional_id", Auth::user()->id)->get();
-            } else {
-                $obras = Obra::where("encargado_obra_id", Auth::user()->id)->get();
-            }
-        } else {
-            $obras = Obra::all();
-        }
-
-        if ($obra_id != 'TODOS') {
-            $request->validate([
-                'obra_id' => 'required',
-            ]);
-            $obras = Obra::where('id', 1)->get();
-        }
         $data = [];
-        foreach ($obras as $value) {
-            $data[] = [
-                "name" => $value->nombre,
-                "y" => (int)$value->porcentaje,
-            ];
-        }
 
+        foreach ($tipo_servicios as $value) {
+            $servicios = Servicio::select("servicios.*");
+
+            if ($cliente_id != 'todos') {
+                $servicios->where("cliente_id", $cliente_id);
+            }
+
+            $servicios->where("tipo_servicio", $value);
+
+            $servicios->whereBetween("fecha", [$fecha_ini, $fecha_fin]);
+
+            $servicios = $servicios->count();
+            $data[] = [$value, (int)$servicios];
+        }
 
         return response()->JSON([
             "data" => $data
         ]);
+    }
+
+    public function hora_servicios()
+    {
+        return Inertia::render("Reportes/HoraServicios");
+    }
+
+    public function r_hora_servicios(Request $request)
+    {
+        $servicio_id =  $request->servicio_id;
+        $tipo_servicio =  $request->tipo_servicio;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+
+        $clientes = Cliente::where("status", 1)->get();
+
+        if ($servicio_id != 'todos') {
+            $clientes = Cliente::select("clientes.*")
+                ->join("servicios", "servicios.cliente_id", "clientes.id")
+                ->where("servicios.id", $servicio_id)
+                ->where("clientes.status", 1)
+                ->get();
+        }
+
+        $servicios_clientes = [];
+
+        foreach ($clientes as $item) {
+            $servicios = Servicio::select("servicios.*");
+            $servicios->where("cliente_id", $item->id);
+            if ($servicio_id != 'todos') {
+                $servicios->where("id", $servicio_id);
+            }
+            if ($tipo_servicio != 'todos') {
+                $servicios->where("tipo_servicio", $tipo_servicio);
+            }
+            $servicios->whereBetween("fecha", [$fecha_ini, $fecha_fin]);
+
+            $servicios_clientes[$item->id] = $servicios->get();
+        }
+
+        $pdf = PDF::loadView('reportes.hora_servicios', compact('clientes', 'servicios_clientes'))->setPaper('letter', 'portrait');
+
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
+
+        return $pdf->stream('hora_servicios.pdf');
+    }
+
+    public function rg_hora_servicios(Request $request)
+    {
+        $servicio_id =  $request->servicio_id;
+        $tipo_servicio =  $request->tipo_servicio;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+
+
+        $clientes = Cliente::where("status", 1)->get();
+
+        if ($servicio_id != 'todos') {
+            $clientes = Cliente::select("clientes.*")
+                ->join("servicios", "servicios.cliente_id", "clientes.id")
+                ->where("servicios.id", $servicio_id)
+                ->where("clientes.status", 1)
+                ->get();
+        }
+
+        $servicios_clientes = [];
+
+        $data = [];
+        $categories = [];
+        $tipo_servicios = ["GARANTÍA", "CONTRATO", "FACTURAR", "SOPORTE", "RELEVAMIENTO", "OTROS"];
+        if ($tipo_servicio != 'todos') {
+            $tipo_servicios = [$tipo_servicio];
+        }
+
+        foreach ($clientes as $item) {
+            $categories[] = $item->razon_social;
+        }
+
+        foreach ($tipo_servicios as  $key => $value) {
+            $data[] = [
+                "name" => $value,
+                "data" => []
+            ];
+            foreach ($clientes as $item) {
+                $servicios = Servicio::select("servicios.*");
+                $servicios->where("cliente_id", $item->id);
+                $servicios->where("tipo_servicio", $value);
+                if ($servicio_id != 'todos') {
+                    $servicios->where("id", $servicio_id);
+                }
+                $servicios->whereBetween("fecha", [$fecha_ini, $fecha_fin]);
+
+                $data[$key]["data"][] = (float)$servicios->sum("total_horas");
+            }
+        }
+
+        return response()->JSON([
+            "categories" => $categories,
+            "data" => $data,
+        ]);
+    }
+
+    public function solicitud_atencion()
+    {
+    }
+
+    public function r_solicitud_atencion(Request $request)
+    {
+    }
+
+    public function rg_solicitud_atencion(Request $request)
+    {
+    }
+
+    public function personal()
+    {
+    }
+
+    public function r_personal(Request $request)
+    {
     }
 }

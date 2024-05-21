@@ -42,10 +42,10 @@ const txtBtn = computed(() => {
 
 const listTipos = ref([
     { value: "TODOS", label: "TODOS" },
-    { value: "GERENTE GENERAL", label: "GERENTE GENERAL" },
-    { value: "GERENTE REGIONAL", label: "GERENTE REGIONAL" },
-    { value: "ADMINISTRADOR DE PERSONAL", label: "ADMINISTRADOR DE PERSONAL" },
-    { value: "ENCARGADO DE OBRA", label: "ENCARGADO DE OBRA" },
+    { value: "GERENTE TÉCNICO", label: "GERENTE TÉCNICO" },
+    { value: "TÉCNICO SENIOR", label: "TÉCNICO SENIOR" },
+    { value: "TÉCNICO JUNIOR", label: "TÉCNICO JUNIOR" },
+    { value: "TÉCNICO PASANTE", label: "TÉCNICO PASANTE" },
 ]);
 
 const generarReporte = () => {
@@ -93,7 +93,7 @@ const generarReporte = () => {
                                     </v-col>
                                     <v-col cols="12">
                                         <v-btn
-                                            color="blue-darken-3"
+                                            color="blue"
                                             block
                                             @click="generarReporte"
                                             :disabled="generando"

@@ -23,6 +23,11 @@ const user_logeado = ref({
 
 const submenus = {
     "reportes.usuarios": "Reportes",
+    "reportes.inventario_equipos": "Reportes",
+    "reportes.servicios": "Reportes",
+    "reportes.hora_servicios": "Reportes",
+    "reportes.solicitud_atencion": "Reportes",
+    "reportes.personal": "Reportes",
 };
 
 const route_current = ref("");
@@ -297,7 +302,11 @@ const scrollActive = () => {
                 class="mx-3"
                 v-if="
                     oUser.permisos.includes('reportes.usuarios') ||
-                    oUser.permisos.includes('reportes.avance_obras')
+                    oUser.permisos.includes('reportes.inventario_equipos')||
+                    oUser.permisos.includes('reportes.servicios')||
+                    oUser.permisos.includes('reportes.hora_servicios')||
+                    oUser.permisos.includes('reportes.solicitud_atencion')||
+                    oUser.permisos.includes('reportes.personal')
                 "
             >
                 <template v-slot:activator="{ props }">
@@ -307,7 +316,11 @@ const scrollActive = () => {
                         title="Reportes"
                         :class="[
                             route_current == 'reporutes.usuarios' ||
-                            route_current == 'reportes.avance_obras'
+                            route_current == 'reportes.inventario_equipos'||
+                            route_current == 'reportes.servicios'||
+                            route_current == 'reportes.hora_servicios'||
+                            route_current == 'reportes.solicitud_atencion'||
+                            route_current == 'reportes.personal'
                                 ? 'active'
                                 : '',
                         ]"
@@ -338,6 +351,101 @@ const scrollActive = () => {
                         activator="parent"
                         location="end"
                         >Usuarios</v-tooltip
+                    ></v-list-item
+                >
+                <v-list-item
+                    v-if="oUser.permisos.includes('reportes.inventario_equipos')"
+                    prepend-icon="mdi-chevron-right"
+                    title="Inventario de Equipos"
+                    :class="[
+                        route_current == 'reportes.inventario_equipos' ? 'active' : '',
+                        drawer ? 'px-3' : '',
+                    ]"
+                    @click="cambiarUrl(route('reportes.inventario_equipos'))"
+                    link
+                >
+                    <v-tooltip
+                        v-if="rail && !mobile"
+                        color="white"
+                        activator="parent"
+                        location="end"
+                        >Inventario de Equipos</v-tooltip
+                    ></v-list-item
+                >
+                <v-list-item
+                    v-if="oUser.permisos.includes('reportes.servicios')"
+                    prepend-icon="mdi-chevron-right"
+                    title="Servicios"
+                    :class="[
+                        route_current == 'reportes.servicios' ? 'active' : '',
+                        drawer ? 'px-3' : '',
+                    ]"
+                    @click="cambiarUrl(route('reportes.servicios'))"
+                    link
+                >
+                    <v-tooltip
+                        v-if="rail && !mobile"
+                        color="white"
+                        activator="parent"
+                        location="end"
+                        >Servicios</v-tooltip
+                    ></v-list-item
+                >
+                <v-list-item
+                    v-if="oUser.permisos.includes('reportes.hora_servicios')"
+                    prepend-icon="mdi-chevron-right"
+                    title="Horas por Servicios"
+                    :class="[
+                        route_current == 'reportes.hora_servicios' ? 'active' : '',
+                        drawer ? 'px-3' : '',
+                    ]"
+                    @click="cambiarUrl(route('reportes.hora_servicios'))"
+                    link
+                >
+                    <v-tooltip
+                        v-if="rail && !mobile"
+                        color="white"
+                        activator="parent"
+                        location="end"
+                        >Horas por Servicios</v-tooltip
+                    ></v-list-item
+                >
+                <v-list-item
+                    v-if="oUser.permisos.includes('reportes.solicitud_atencion')"
+                    prepend-icon="mdi-chevron-right"
+                    title="Solicitud de Atención"
+                    :class="[
+                        route_current == 'reportes.solicitud_atencion' ? 'active' : '',
+                        drawer ? 'px-3' : '',
+                    ]"
+                    @click="cambiarUrl(route('reportes.solicitud_atencion'))"
+                    link
+                >
+                    <v-tooltip
+                        v-if="rail && !mobile"
+                        color="white"
+                        activator="parent"
+                        location="end"
+                        >Solicitud de Atención</v-tooltip
+                    ></v-list-item
+                >
+                <v-list-item
+                    v-if="oUser.permisos.includes('reportes.personal')"
+                    prepend-icon="mdi-chevron-right"
+                    title="Personal"
+                    :class="[
+                        route_current == 'reportes.personal' ? 'active' : '',
+                        drawer ? 'px-3' : '',
+                    ]"
+                    @click="cambiarUrl(route('reportes.personal'))"
+                    link
+                >
+                    <v-tooltip
+                        v-if="rail && !mobile"
+                        color="white"
+                        activator="parent"
+                        location="end"
+                        >Personal</v-tooltip
                     ></v-list-item
                 >
             </v-list-group>

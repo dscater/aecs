@@ -3,17 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Usuarios</title>
+    <title>Inventario de Equipos</title>
     <style type="text/css">
         * {
             font-family: sans-serif;
         }
 
         @page {
-            margin-top: 1.5cm;
-            margin-bottom: 0.3cm;
-            margin-left: 0.3cm;
-            margin-right: 0.3cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+            margin-left: 1.5cm;
+            margin-right: 1cm;
         }
 
         table {
@@ -155,50 +155,36 @@
         <h2 class="titulo">
             {{ $configuracion->first()->razon_social }}
         </h2>
-        <h4 class="texto">LISTA DE USUARIOS</h4>
+        <h4 class="texto">INVENTARIO DE EQUIPOS</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
     </div>
     <table border="1">
         <thead class="bg-principal">
             <tr>
-                <th width="3%">N°</th>
-                <th width="5%">FOTO</th>
-                <th>USUARIO</th>
-                <th>PATERNO</th>
-                <th>MATERNO</th>
-                <th>NOMBRE(S)</th>
-                <th>C.I.</th>
-                <th>DOMICILIO</th>
-                <th>TELÉFONO/CELULAR</th>
-                <th>TIPO</th>
-                <th>ACCESO</th>
-                <th width="9%">FECHA DE REGISTRO</th>
+                <th>CÓDIGO SERVICIO</th>
+                <th>TIPO DE EQUIPO</th>
+                <th>MARCA</th>
+                <th>MODELO</th>
+                <th>NÚMERO DE SERIE</th>
+                <th>NÚMERO DE PARTE</th>
+                <th>NÚMERO DE ACTIVO</th>
+                <th>UBICACIÓN</th>
             </tr>
         </thead>
         <tbody>
             @php
                 $cont = 1;
             @endphp
-            @foreach ($usuarios as $user)
+            @foreach ($servicios as $servicio)
                 <tr>
-                    <td class="centreado">{{ $cont++ }}</td>
-                    <td class="img_celda centreado">
-                        @if ($user->url_foto)
-                            <img src="{{ $user->url_foto }}" alt="Foto">
-                        @else
-                            S/F
-                        @endif
-                    </td>
-                    <td>{{ $user->usuario }}</td>
-                    <td class="">{{ $user->paterno }}</td>
-                    <td class="">{{ $user->materno }}</td>
-                    <td class="">{{ $user->nombre }}</td>
-                    <td class="">{{ $user->full_ci }}</td>
-                    <td class="">{{ $user->domicilio }}</td>
-                    <td class="">{{ $user->cel }}</td>
-                    <td class="">{{ $user->tipo }}</td>
-                    <td class="centreado">{{ $user->acceso == 1 ? 'HABILITADO' : 'DENEGADO' }}</td>
-                    <td class="centreado">{{ $user->fecha_registro_t }}</td>
+                    <td>{{ $servicio->cod }}</td>
+                    <td>{{ $servicio->tipo }}</td>
+                    <td>{{ $servicio->marca }}</td>
+                    <td>{{ $servicio->modelo }}</td>
+                    <td>{{ $servicio->nro_serie }}</td>
+                    <td>{{ $servicio->nro_parte }}</td>
+                    <td>{{ $servicio->nro_activo }}</td>
+                    <td>{{ $servicio->ubicacion }}</td>
                 </tr>
             @endforeach
         </tbody>

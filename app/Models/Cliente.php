@@ -31,4 +31,9 @@ class Cliente extends Model
         }
         return "";
     }
+
+    public function servicios()
+    {
+        return $this->hasMany(Servicio::class, 'cliente_id');
+    }
 }

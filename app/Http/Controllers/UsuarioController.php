@@ -136,10 +136,6 @@ class UsuarioController extends Controller
 
     public function update(User $user, Request $request)
     {
-        $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci,' . $user->id;
-        if ($request->hasFile('foto')) {
-            $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
-        }
         $request->validate($this->validacion, $this->mensajes);
         DB::beginTransaction();
         try {
