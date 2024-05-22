@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Reporte Servicios",
+        title: "Reporte Solicitud de Atención",
         disabled: false,
         url: "",
         name_url: "",
@@ -22,7 +22,7 @@ import { computed, onMounted, ref } from "vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import Highcharts from "highcharts";
 import exporting from "highcharts/modules/exporting";
-import { useClientes } from "@/composables/clientes/useClientes";
+import { usePersonals } from "@/composables/personals/usePersonals";
 
 exporting(Highcharts);
 Highcharts.setOptions({
@@ -38,7 +38,7 @@ Highcharts.setOptions({
     },
 });
 
-const { getClientes } = useClientes();
+const { getPersonals } = usePersonals();
 const { setLoading } = useApp();
 
 onMounted(() => {
@@ -48,8 +48,8 @@ onMounted(() => {
 });
 
 const form = ref({
-    cliente_id: "todos",
-    tipo_servicio: "todos",
+    personal_id: "todos",
+    estado: "todos",
     fecha_ini: obtenerFechaActual(),
     fecha_fin: obtenerFechaActual(),
 });
@@ -68,15 +68,12 @@ const txtBtn2 = computed(() => {
     return `Generar Reporte Pdf <i class="mdi mdi-file-pdf-box"></i>`;
 });
 
-const listClientes = ref([]);
-const listTipoServicios = ref([
+const listPersonals = ref([]);
+const listEstados = ref([
     { value: "todos", label: "TODOS" },
-    { value: "GARANTÍA", label: "GARANTÍA" },
-    { value: "CONTRATO", label: "CONTRATO" },
-    { value: "FACTURAR", label: "FACTURAR" },
-    { value: "SOPORTE", label: "SOPORTE" },
-    { value: "RELEVAMIENTO", label: "RELEVAMIENTO" },
-    { value: "OTROS", label: "OTROS" },
+    { value: "PENDIENTE", label: "PENDIENTE" },
+    { value: "EN PROCESO", label: "EN PROCESO" },
+    { value: "ATENDIDO", label: "ATENDIDO" },
 ]);
 const formulario = ref(null);
 const generarReporte = async () => {
@@ -85,8 +82,13 @@ const generarReporte = async () => {
         generando.value = true;
 
         axios
-            .get(route("reportes.rg_servicios"), { params: form.value })
+            .get(route("reportes.rg_solicitud_atencion"), {
+                params: form.value,
+            })
             .then((response) => {
+                console.log(response.data.categories);
+                console.log(response.data.data);
+
                 // Create the chart
                 Highcharts.chart("container", {
                     chart: {
@@ -94,7 +96,7 @@ const generarReporte = async () => {
                     },
                     title: {
                         align: "center",
-                        text: "Servicios",
+                        text: "Solicitud de Atención",
                     },
                     subtitle: {
                         align: "left",
@@ -114,7 +116,7 @@ const generarReporte = async () => {
                         },
                     },
                     legend: {
-                        enabled: false,
+                        enabled: true,
                     },
                     plotOptions: {
                         series: {
@@ -130,9 +132,8 @@ const generarReporte = async () => {
                         headerFormat:
                             '<span style="font-size:11px">{series.name}</span><br>',
                         pointFormat:
-                            '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>',
+                            '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0} h.</b><br/>',
                     },
-
                     series: [
                         {
                             name: "Total",
@@ -148,7 +149,7 @@ const generarReporte = async () => {
 
 const generarReportePdf = () => {
     generando.value = true;
-    const url = route("reportes.r_servicios", form.value);
+    const url = route("reportes.r_solicitud_atencion", form.value);
     window.open(url, "_blank");
     setTimeout(() => {
         generando.value = false;
@@ -156,11 +157,11 @@ const generarReportePdf = () => {
 };
 
 const cargarListas = async () => {
-    listClientes.value = await getClientes();
+    listPersonals.value = await getPersonals();
 
-    listClientes.value.unshift({
+    listPersonals.value.unshift({
         id: "todos",
-        razon_social: "TODOS",
+        full_name: "TODOS",
     });
 };
 
@@ -178,7 +179,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <Head title="Reporte Servicios"></Head>
+    <Head title="Reporte Solicitud de Atención"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row>
@@ -194,59 +195,57 @@ onMounted(() => {
                                     <v-col cols="12">
                                         <v-autocomplete
                                             :hide-details="
-                                                form.errors?.cliente_id
+                                                form.errors?.personal_id
                                                     ? false
                                                     : true
                                             "
                                             :error="
-                                                form.errors?.cliente_id
+                                                form.errors?.personal_id
                                                     ? true
                                                     : false
                                             "
                                             :error-messages="
-                                                form.errors?.cliente_id
-                                                    ? form.errors?.cliente_id
+                                                form.errors?.personal_id
+                                                    ? form.errors?.personal_id
                                                     : ''
                                             "
                                             variant="outlined"
                                             density="compact"
                                             required
-                                            :items="listClientes"
+                                            :items="listPersonals"
                                             item-value="id"
-                                            item-title="razon_social"
+                                            item-title="full_name"
                                             no-data-text="Sin registros..."
-                                            label="Seleccionar Cliente*"
-                                            v-model="form.cliente_id"
+                                            label="Seleccionar Técnico*"
+                                            v-model="form.personal_id"
                                         ></v-autocomplete>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                    >
+                                    <v-col cols="12">
                                         <v-autocomplete
                                             :hide-details="
-                                                form.errors?.tipo_servicio
+                                                form.errors?.estado
                                                     ? false
                                                     : true
                                             "
                                             :error="
-                                                form.errors?.tipo_servicio
+                                                form.errors?.estado
                                                     ? true
                                                     : false
                                             "
                                             :error-messages="
-                                                form.errors?.tipo_servicio
-                                                    ? form.errors?.tipo_servicio
+                                                form.errors?.estado
+                                                    ? form.errors?.estado
                                                     : ''
                                             "
                                             variant="outlined"
                                             density="compact"
                                             required
-                                            :items="listTipoServicios"
+                                            :items="listEstados"
                                             item-value="value"
                                             item-title="label"
                                             no-data-text="Sin registros..."
-                                            label="Seleccionar Tipo de Servicio*"
-                                            v-model="form.tipo_servicio"
+                                            label="Seleccionar Estado*"
+                                            v-model="form.estado"
                                         ></v-autocomplete>
                                     </v-col>
                                     <v-col cols="12">

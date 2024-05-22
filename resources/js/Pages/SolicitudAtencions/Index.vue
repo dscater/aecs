@@ -137,7 +137,10 @@ const eliminarSolicitudAtencion = (item) => {
     <Head title="Solicitud de Atención"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
-        <v-row class="mt-0">
+        <v-row
+            class="mt-0"
+            v-if="props.auth.user.permisos.includes('solicitud_atencions.create')"
+        >
             <v-col cols="12" class="d-flex justify-end">
                 <v-btn
                     color="blue"

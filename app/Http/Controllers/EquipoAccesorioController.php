@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ class EquipoAccesorioController extends Controller
     {
         return Inertia::render("EquipoAccesorios/Index");
     }
-    
+
     public function paginado(Request $request)
     {
         $search = $request->search;
@@ -25,6 +26,10 @@ class EquipoAccesorioController extends Controller
         if (trim($search) != "") {
             $servicios->where(DB::raw("CONCAT(servicios.cod,' ',servicios.tipo,' ',servicios.marca,' ',servicios.modelo,' ',servicios.nro_serie,' ',servicios.nro_parte,' ',servicios.nro_activo,' ',servicios.ubicacion)"), "LIKE", "%$search%");
             // $servicios->where("razon_social", "LIKE", "%$search%");
+        }
+
+        if (Auth::user()->tipo != 'GERENTE TÉCNICO') {
+            $servicios->where("personal_id", Auth::user()->personal->id);
         }
 
         $servicios = $servicios->orderBy("id", "desc")->paginate($request->itemsPerPage);

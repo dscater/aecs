@@ -72,7 +72,7 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         if ($this->personal) {
-            return $this->nombre . ' ' . $this->paterno . ($this->materno != NULL && $this->materno != '' ? ' ' . $this->materno : '');
+            return $this->personal->nombre . ' ' . $this->personal->paterno . ($this->materno != NULL && $this->personal->materno != '' ? ' ' . $this->personal->materno : '');
         }
         return $this->usuario;
     }
@@ -88,7 +88,7 @@ class User extends Authenticatable
     public function getInicialesNombreAttribute()
     {
         if ($this->personal) {
-            $iniciales = substr($this->nombre, 0, 1) . substr($this->paterno, 0, 1);
+            $iniciales = substr($this->personal->nombre, 0, 1) . substr($this->personal->paterno, 0, 1);
             return $iniciales;
         }
         $iniciales = substr($this->usuario, 0, 1);

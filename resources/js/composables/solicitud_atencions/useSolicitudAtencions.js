@@ -138,6 +138,7 @@ export const useSolicitudAtencions = () => {
     };
 
     const setSolicitudAtencion = (item = null) => {
+        const { props } = usePage();
         if (item) {
             oSolicitudAtencion.value.id = item.id;
             oSolicitudAtencion.value.cliente_id = item.cliente_id;
@@ -145,6 +146,13 @@ export const useSolicitudAtencions = () => {
             oSolicitudAtencion.value.descripcion = item.descripcion;
             oSolicitudAtencion.value.fecha = item.fecha;
             oSolicitudAtencion.value.hora = item.hora;
+            console.log(props);
+            if (props.auth.user.tipo != "GERENTE TÉCNICO") {
+                oSolicitudAtencion.value.estado = item.estado;
+                oSolicitudAtencion.value.cliente = item.cliente;
+                oSolicitudAtencion.value.personal = item.personal;
+                oSolicitudAtencion.value.fecha_hora_t = item.fecha_hora_t;
+            }
             oSolicitudAtencion.value._method = "PUT";
             return oSolicitudAtencion;
         }

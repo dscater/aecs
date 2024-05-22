@@ -14,6 +14,7 @@ const props = defineProps({
         default: 0,
     },
 });
+const { props: props_page } = usePage();
 
 const { oSolicitudAtencion, limpiarSolicitudAtencion } =
     useSolicitudAtencions();
@@ -46,8 +47,8 @@ const { flash } = usePage().props;
 
 const tituloDialog = computed(() => {
     return accion.value == 0
-        ? `Agregar SolicitudAtencion`
-        : `Editar SolicitudAtencion`;
+        ? `Agregar Solicitud de Atención`
+        : `Editar Solicitud de Atención`;
 });
 
 const enviarFormulario = () => {
@@ -55,7 +56,9 @@ const enviarFormulario = () => {
         form["_method"] == "POST"
             ? route("solicitud_atencions.store")
             : route("solicitud_atencions.update", form.id);
-
+    if (props_page.auth.user.tipo != "GERENTE TÉCNICO") {
+        url = route("solicitud_atencions.update_estado", form.id);
+    }
     form.post(url, {
         preserveScroll: true,
         forceFormData: true,
@@ -124,7 +127,11 @@ const cerrarDialog = () => {
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                        <form>
+                        <form
+                            v-if="
+                                props_page.auth.user.tipo == 'GERENTE TÉCNICO'
+                            "
+                        >
                             <v-row>
                                 <v-col cols="12" sm="6" md="4">
                                     <v-autocomplete
@@ -257,6 +264,59 @@ const cerrarDialog = () => {
                                         density="compact"
                                         v-model="form.hora"
                                     ></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </form>
+                        <form
+                            v-if="
+                                props_page.auth.user.tipo != 'GERENTE TÉCNICO'
+                            "
+                        >
+                            <v-row>
+                                <v-col cols="12">
+                                    <p>
+                                        <strong>Cliente: </strong
+                                        >{{
+                                            oSolicitudAtencion.cliente
+                                                .razon_social
+                                        }}
+                                    </p>
+                                    <p>
+                                        <strong>Personal Técnico: </strong
+                                        >{{
+                                            oSolicitudAtencion.personal
+                                                .full_name
+                                        }}
+                                    </p>
+                                    <p>
+                                        <strong
+                                            >Descripción de atención: </strong
+                                        >{{ oSolicitudAtencion.descripcion }}
+                                    </p>
+                                    <p>
+                                        <strong>Fecha y Hora: </strong
+                                        >{{ oSolicitudAtencion.fecha_hora_t }}
+                                    </p>
+                                    <p class="mt-3">
+                                        <v-select
+                                            :hide-details="true"
+                                            :error-messages="
+                                                form.errors?.estado
+                                                    ? form.errors?.estado
+                                                    : ''
+                                            "
+                                            density="compact"
+                                            variant="outlined"
+                                            color="blue"
+                                            :items="[
+                                                'PENDIENTE',
+                                                'EN PROCESO',
+                                                'ATENDIDO',
+                                            ]"
+                                            label="Estado*"
+                                            v-model="form.estado"
+                                        ></v-select>
+                                    </p>
                                 </v-col>
                             </v-row>
                         </form>

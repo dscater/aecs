@@ -96,6 +96,10 @@ const recargaServicios = async () => {
     }, 300);
 };
 
+const notaServicio = (id) => {
+    window.open(route("reportes.r_servicios") + "?servicio_id=" + id, "_blank");
+};
+
 const editarServicio = (item) => {
     cambiarUrl(route("servicios.edit", item.id));
 };
@@ -208,6 +212,13 @@ const verUbicación = async (item) => {};
                                             ></v-btn>
                                         </td>
                                         <td class="text-right" width="5%">
+                                            <v-btn
+                                                color="primary"
+                                                size="small"
+                                                class="pa-1 ma-1"
+                                                icon="mdi-file-document-outline"
+                                                @click="notaServicio(item.id)"
+                                            ></v-btn>
                                             <v-btn
                                                 v-if="
                                                     props.auth.user.permisos.includes(

@@ -37,6 +37,9 @@ class SolicitudAtencionController extends Controller
     public function listado(Request $request)
     {
         $solicitud_atencions = SolicitudAtencion::select("solicitud_atencions.*")->where("status", 1);
+        if (Auth::user()->tipo != 'GERENTE TÉCNICO') {
+            $solicitud_atencions->where("personal_id", Auth::user()->personal->id);
+        }
         $solicitud_atencions = $solicitud_atencions->get();
         return response()->JSON([
             "solicitud_atencions" => $solicitud_atencions
@@ -54,6 +57,9 @@ class SolicitudAtencionController extends Controller
         if (trim($search) != "") {
             $solicitud_atencions->where(DB::raw("CONCAT(clientes.razon_social,' ',personals.nombre,' ',personals.paterno,' ',personals.materno,' ',solicitud_atencions.descripcion)"), "LIKE", "%$search%");
             // $solicitud_atencions->where("razon_social", "LIKE", "%$search%");
+        }
+        if (Auth::user()->tipo != 'GERENTE TÉCNICO') {
+            $solicitud_atencions->where("solicitud_atencions.personal_id", Auth::user()->personal->id);
         }
 
         $solicitud_atencions = $solicitud_atencions->paginate($request->itemsPerPage);
@@ -109,6 +115,39 @@ class SolicitudAtencionController extends Controller
                 'user_id' => Auth::user()->id,
                 'accion' => 'MODIFICACIÓN',
                 'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UNA SOLICITUD DE ATENCIÓN',
+                'datos_original' => $datos_original,
+                'datos_nuevo' => $datos_nuevo,
+                'modulo' => 'SOLICITUD DE ATENCIÓN',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s')
+            ]);
+
+
+            DB::commit();
+            return redirect()->route("solicitud_atencions.index")->with("bien", "Registro actualizado");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::debug($e->getMessage());
+            throw ValidationException::withMessages([
+                'error' =>  $e->getMessage(),
+            ]);
+        }
+    }
+    public function update_estado(SolicitudAtencion $solicitud_atencion, Request $request)
+    {
+        $request->validate($this->validacion, $this->mensajes);
+        DB::beginTransaction();
+        try {
+            $datos_original = HistorialAccion::getDetalleRegistro($solicitud_atencion, "solicitud_atencions");
+            $solicitud_atencion->update([
+                "estado" => $request->estado
+            ]);
+
+            $datos_nuevo = HistorialAccion::getDetalleRegistro($solicitud_atencion, "solicitud_atencions");
+            HistorialAccion::create([
+                'user_id' => Auth::user()->id,
+                'accion' => 'MODIFICACIÓN',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ EL ESTADO DE UNA SOLICITUD DE ATENCIÓN',
                 'datos_original' => $datos_original,
                 'datos_nuevo' => $datos_nuevo,
                 'modulo' => 'SOLICITUD DE ATENCIÓN',

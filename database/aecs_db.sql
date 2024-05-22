@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 21-05-2024 a las 21:35:09
+-- Tiempo de generación: 22-05-2024 a las 20:09:18
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -49,7 +49,8 @@ CREATE TABLE `clientes` (
 
 INSERT INTO `clientes` (`id`, `razon_social`, `tipo`, `descripcion`, `nit`, `dir`, `fono`, `correo`, `nivel`, `fecha_registro`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'CLIENTE #1 S.A.', 'PÚBLICO', 'DESCRIPCION CLIENTE 1', '111111', 'LOS OLIVOS', '77777777', 'CLIENTE1@GMAIL.COM', 'ALTA', '2024-05-20', 1, '2024-05-20 20:39:59', '2024-05-20 20:42:09'),
-(2, 'CLIENTE #2 S.R.L.', 'PRIVADO', '', '', '', '', '', 'MEDIA', '2024-05-20', 1, '2024-05-20 20:42:29', '2024-05-20 20:42:29');
+(2, 'CLIENTE #2 S.R.L.', 'PRIVADO', '', '', '', '', '', 'MEDIA', '2024-05-20', 1, '2024-05-20 20:42:29', '2024-05-20 20:42:29'),
+(3, 'CLIENTE 3 LTDA.', 'PÚBLICO', 'DESC.', '', '', '', '', 'MEDIA', '2024-05-22', 1, '2024-05-22 15:07:25', '2024-05-22 15:07:25');
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,17 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (20, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SERVICIO', 'id: 1<br/>cod: SER1<br/>nro: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>fecha: 2024-05-21<br/>hora_ini: 08:15:00<br/>hora_fin: 12:15:00<br/>total_horas: 4<br/>ubicacion: UBICACIÓN SERV. 1<br/>tipo: TIPO #1<br/>marca: MARCA #1<br/>modelo: MODELO #1<br/>nro_serie: NRO SERIE #1<br/>nro_parte: <br/>nro_activo: NRO ACTIVO #1<br/>tipo_servicio: GARANTÍA<br/>foto: 1716307469_1.png<br/>problema: PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1<br/>trabajo_realizado: TRABAJO REALIZADO EN EL SERVICIO #1.<br/>partes: PARTES UTILIZADAS EN EL SERVICIO #1<br/>tipo_trabajo: MANTENIMIENTO PREVENTIVO<br/>fecha_registro: 2024-05-21<br/>status: 1<br/>created_at: 2024-05-21 12:04:29<br/>updated_at: 2024-05-21 12:04:29<br/>', 'id: 1<br/>cod: SER1<br/>nro: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>fecha: 2024-05-21<br/>hora_ini: 08:15:00<br/>hora_fin: 12:15:00<br/>total_horas: 4<br/>ubicacion: UBICACIÓN SERV. 1<br/>tipo: TIPO #1<br/>marca: MARCA #1<br/>modelo: MODELO #1<br/>nro_serie: NRO SERIE #1<br/>nro_parte: NRO PARTE #1<br/>nro_activo: NRO ACTIVO #1<br/>tipo_servicio: GARANTÍA<br/>foto: 1716307469_1.png<br/>problema: PROBLEMA REPORTADO SEGUN CLIENTE PARA EL SERVICIO #1<br/>trabajo_realizado: TRABAJO REALIZADO EN EL SERVICIO #1.<br/>partes: PARTES UTILIZADAS EN EL SERVICIO #1<br/>tipo_trabajo: MANTENIMIENTO PREVENTIVO<br/>fecha_registro: 2024-05-21<br/>status: 1<br/>created_at: 2024-05-21 12:04:29<br/>updated_at: 2024-05-21 12:06:44<br/>', 'SERVICIOS', '2024-05-21', '12:06:44', '2024-05-21 16:06:44', '2024-05-21 16:06:44'),
 (21, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SERVICIO', 'id: 2<br/>cod: SER.2<br/>nro: 2<br/>cliente_id: 2<br/>personal_id: 2<br/>fecha: 2024-05-21<br/>hora_ini: 10:00<br/>hora_fin: 14:15<br/>total_horas: 4.25<br/>ubicacion: UBICACION SERV. #2<br/>tipo: <br/>marca: <br/>modelo: <br/>nro_serie: <br/>nro_parte: <br/>nro_activo: <br/>tipo_servicio: CONTRATO<br/>foto: <br/>problema: PROBLEMA REPORTADO EN EL SERVICIO #2<br/>trabajo_realizado: TRABAJOS REALIZADOS ENE L SERVICIO #2<br/>partes: <br/>tipo_trabajo: MANTENIMIENTO CORRECTIVO<br/>fecha_registro: 2024-05-21<br/>status: <br/>created_at: 2024-05-21 12:09:43<br/>updated_at: 2024-05-21 12:09:43<br/>', NULL, 'SERVICIOS', '2024-05-21', '12:09:43', '2024-05-21 16:09:43', '2024-05-21 16:09:43'),
 (22, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 1<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-20 15:32:44<br/>', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 0<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:27<br/>', 'USUARIOS', '2024-05-21', '12:31:27', '2024-05-21 16:31:27', '2024-05-21 16:31:27'),
-(23, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 0<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:27<br/>', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 1<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:30<br/>', 'USUARIOS', '2024-05-21', '12:31:30', '2024-05-21 16:31:30', '2024-05-21 16:31:30');
+(23, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 0<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:27<br/>', 'id: 2<br/>personal_id: 1<br/>usuario: JPERES<br/>password: $2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2<br/>tipo: TÉCNICO SENIOR<br/>acceso: 1<br/>foto: 1715897155_1.jpg<br/>fecha_registro: 2024-05-20 00:00:00<br/>created_at: 2024-05-20 15:32:44<br/>updated_at: 2024-05-21 12:31:30<br/>', 'USUARIOS', '2024-05-21', '12:31:30', '2024-05-21 16:31:30', '2024-05-21 16:31:30'),
+(24, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 3<br/>nombre: JAIME<br/>paterno: CORTEZ<br/>materno: CORTEZ<br/>ci: 3333<br/>ci_exp: LP<br/>estado_civil: CASADO<br/>fecha_nac: 2000-01-01<br/>cel: 777777<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECIALIDAD #3<br/>record: <br/>hoja_vida: <br/>foto: <br/>fecha_registro: 2024-05-22<br/>status: <br/>created_at: 2024-05-22 11:06:03<br/>updated_at: 2024-05-22 11:06:03<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-22', '11:06:03', '2024-05-22 15:06:03', '2024-05-22 15:06:03'),
+(25, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 4<br/>nombre: CARLOS<br/>paterno: MARTINES<br/>materno: <br/>ci: 4444<br/>ci_exp: CB<br/>estado_civil: SOLTERO<br/>fecha_nac: 2000-02-02<br/>cel: 66666666<br/>domicilio: <br/>especialidad: ESPECIALIDAD #4<br/>record: <br/>hoja_vida: <br/>foto: <br/>fecha_registro: 2024-05-22<br/>status: <br/>created_at: 2024-05-22 11:06:28<br/>updated_at: 2024-05-22 11:06:28<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-22', '11:06:28', '2024-05-22 15:06:28', '2024-05-22 15:06:28'),
+(26, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PERSONAL TÉCNICO', 'id: 5<br/>nombre: LUIS<br/>paterno: MAMANI<br/>materno: <br/>ci: 5555<br/>ci_exp: CB<br/>estado_civil: SOLTERO<br/>fecha_nac: 2000-03-03<br/>cel: 676767667<br/>domicilio: LOS OLIVOS<br/>especialidad: ESPECILIDAD #1<br/>record: <br/>hoja_vida: <br/>foto: <br/>fecha_registro: 2024-05-22<br/>status: <br/>created_at: 2024-05-22 11:06:50<br/>updated_at: 2024-05-22 11:06:50<br/>', NULL, 'PERSONAL TÉCNICO', '2024-05-22', '11:06:50', '2024-05-22 15:06:50', '2024-05-22 15:06:50'),
+(27, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', 'id: 3<br/>razon_social: CLIENTE 3 LTDA.<br/>tipo: PÚBLICO<br/>descripcion: DESC.<br/>nit: <br/>dir: <br/>fono: <br/>correo: <br/>nivel: MEDIA<br/>fecha_registro: 2024-05-22<br/>status: <br/>created_at: 2024-05-22 11:07:25<br/>updated_at: 2024-05-22 11:07:25<br/>', NULL, 'CLIENTES', '2024-05-22', '11:07:25', '2024-05-22 15:07:25', '2024-05-22 15:07:25'),
+(28, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SOLICITUD DE ATENCIÓN', 'id: 3<br/>cliente_id: 3<br/>personal_id: 5<br/>descripcion: DESC. ATENCION<br/>fecha: 2024-05-22<br/>hora: 11:00<br/>estado: <br/>fecha_registro: 2024-05-22<br/>status: <br/>created_at: 2024-05-22 11:07:45<br/>updated_at: 2024-05-22 11:07:45<br/>', NULL, 'SOLICITUD DE ATENCIÓN', '2024-05-22', '11:07:45', '2024-05-22 15:07:45', '2024-05-22 15:07:45'),
+(29, 2, 'MODIFICACIÓN', 'EL USUARIO JPERES MODIFICÓ EL ESTADO DE UNA SOLICITUD DE ATENCIÓN', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 16:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:24<br/>', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 16:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:24<br/>', 'SOLICITUD DE ATENCIÓN', '2024-05-22', '15:56:57', '2024-05-22 19:56:57', '2024-05-22 19:56:57'),
+(30, 2, 'MODIFICACIÓN', 'EL USUARIO JPERES MODIFICÓ EL ESTADO DE UNA SOLICITUD DE ATENCIÓN', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 16:00:00<br/>estado: PENDIENTE<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-20 17:18:24<br/>', 'id: 1<br/>cliente_id: 1<br/>personal_id: 1<br/>descripcion: DESCRIPCION SOLICITUD #1<br/>fecha: 2024-05-20<br/>hora: 16:00:00<br/>estado: EN PROCESO<br/>fecha_registro: 2024-05-20<br/>status: 1<br/>created_at: 2024-05-20 17:17:40<br/>updated_at: 2024-05-22 15:57:01<br/>', 'SOLICITUD DE ATENCIÓN', '2024-05-22', '15:57:01', '2024-05-22 19:57:01', '2024-05-22 19:57:01'),
+(31, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', 'id: 3<br/>personal_id: 2<br/>usuario: ACARDOZO<br/>password: $2y$12$uPVxnXs.D78Onr2Os6U35.tzaszr1Q2ThQbpISuVavdBSs955SkVS<br/>tipo: TÉCNICO JUNIOR<br/>acceso: 0<br/>foto: <br/>fecha_registro: 2024-05-22 00:00:00<br/>created_at: 2024-05-22 16:06:03<br/>updated_at: 2024-05-22 16:06:03<br/>', NULL, 'USUARIOS', '2024-05-22', '16:06:03', '2024-05-22 20:06:03', '2024-05-22 20:06:03'),
+(32, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'id: 3<br/>personal_id: 2<br/>usuario: ACARDOZO<br/>password: $2y$12$uPVxnXs.D78Onr2Os6U35.tzaszr1Q2ThQbpISuVavdBSs955SkVS<br/>tipo: TÉCNICO JUNIOR<br/>acceso: 0<br/>foto: <br/>fecha_registro: 2024-05-22 00:00:00<br/>created_at: 2024-05-22 16:06:03<br/>updated_at: 2024-05-22 16:06:03<br/>', 'id: 3<br/>personal_id: 2<br/>usuario: ACARDOZO<br/>password: $2y$12$uPVxnXs.D78Onr2Os6U35.tzaszr1Q2ThQbpISuVavdBSs955SkVS<br/>tipo: TÉCNICO JUNIOR<br/>acceso: 1<br/>foto: <br/>fecha_registro: 2024-05-22 00:00:00<br/>created_at: 2024-05-22 16:06:03<br/>updated_at: 2024-05-22 16:07:39<br/>', 'USUARIOS', '2024-05-22', '16:07:39', '2024-05-22 20:07:39', '2024-05-22 20:07:39'),
+(33, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN USUARIO', 'id: 4<br/>personal_id: 3<br/>usuario: JCORTEZ<br/>password: $2y$12$/75R6ejWHF593L.FiYZ/feDu.pLY2NbdStCz7EJCyWL.LOSTvIerG<br/>tipo: TÉCNICO JUNIOR<br/>acceso: 1<br/>foto: <br/>fecha_registro: 2024-05-22 00:00:00<br/>created_at: 2024-05-22 16:08:03<br/>updated_at: 2024-05-22 16:08:03<br/>', NULL, 'USUARIOS', '2024-05-22', '16:08:03', '2024-05-22 20:08:03', '2024-05-22 20:08:03');
 
 -- --------------------------------------------------------
 
@@ -188,7 +199,10 @@ CREATE TABLE `personals` (
 
 INSERT INTO `personals` (`id`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `estado_civil`, `fecha_nac`, `cel`, `domicilio`, `especialidad`, `record`, `hoja_vida`, `foto`, `fecha_registro`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'JUAN', 'PERES', 'MAMANI', '1111', 'LP', 'SOLTERO', '1999-01-01', '7777777', 'LOS OLIVOS', 'ESPECIALIDAD #2', 'RECORD', '1715897155_1.pdf', '1715897155_1.jpg', '2024-05-16', 1, '2024-05-16 22:05:55', '2024-05-20 20:27:30'),
-(2, 'ALEX', 'CARDOZO', 'MAMANI', '2222', 'LP', 'SOLTERO', '2000-01-01', '77777', '', 'ESPECILIDAD #2', '', NULL, NULL, '2024-05-20', 1, '2024-05-20 19:28:35', '2024-05-20 19:28:35');
+(2, 'ALEX', 'CARDOZO', 'MAMANI', '2222', 'LP', 'SOLTERO', '2000-01-01', '77777', '', 'ESPECILIDAD #2', '', NULL, NULL, '2024-05-20', 1, '2024-05-20 19:28:35', '2024-05-20 19:28:35'),
+(3, 'JAIME', 'CORTEZ', 'CORTEZ', '3333', 'LP', 'CASADO', '2000-01-01', '777777', 'LOS OLIVOS', 'ESPECIALIDAD #3', '', NULL, NULL, '2024-05-22', 1, '2024-05-22 15:06:03', '2024-05-22 15:06:03'),
+(4, 'CARLOS', 'MARTINES', '', '4444', 'CB', 'SOLTERO', '2000-02-02', '66666666', '', 'ESPECIALIDAD #4', '', NULL, NULL, '2024-05-22', 1, '2024-05-22 15:06:28', '2024-05-22 15:06:28'),
+(5, 'LUIS', 'MAMANI', '', '5555', 'CB', 'SOLTERO', '2000-03-03', '676767667', 'LOS OLIVOS', 'ESPECILIDAD #1', '', NULL, NULL, '2024-05-22', 1, '2024-05-22 15:06:50', '2024-05-22 15:06:50');
 
 -- --------------------------------------------------------
 
@@ -277,8 +291,9 @@ CREATE TABLE `solicitud_atencions` (
 --
 
 INSERT INTO `solicitud_atencions` (`id`, `cliente_id`, `personal_id`, `descripcion`, `fecha`, `hora`, `estado`, `fecha_registro`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'DESCRIPCION SOLICITUD #1', '2024-05-20', '16:00:00', 'PENDIENTE', '2024-05-20', 1, '2024-05-20 21:17:40', '2024-05-20 21:18:24'),
-(2, 2, 2, 'DESC. SOL. #2', '2024-05-20', '17:20:00', 'PENDIENTE', '2024-05-20', 1, '2024-05-20 21:21:45', '2024-05-20 21:21:45');
+(1, 1, 1, 'DESCRIPCION SOLICITUD #1', '2024-05-20', '16:00:00', 'EN PROCESO', '2024-05-20', 1, '2024-05-20 21:17:40', '2024-05-22 19:57:01'),
+(2, 2, 2, 'DESC. SOL. #2', '2024-05-20', '17:20:00', 'PENDIENTE', '2024-05-20', 1, '2024-05-20 21:21:45', '2024-05-20 21:21:45'),
+(3, 3, 5, 'DESC. ATENCION', '2024-05-22', '11:00:00', 'PENDIENTE', '2024-05-22', 1, '2024-05-22 15:07:45', '2024-05-22 15:07:45');
 
 -- --------------------------------------------------------
 
@@ -305,7 +320,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `personal_id`, `usuario`, `password`, `tipo`, `acceso`, `foto`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'admin', '$2y$12$9I.ZrE/7q.PdqX5QlNKXDOLOUaiaPdkttXTIm7Z2KWajmoaEc4ahe', 'GERENTE TÉCNICO', 1, NULL, '2024-05-13', '2024-05-13 18:36:25', '2024-05-13 18:36:25'),
-(2, 1, 'JPERES', '$2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2', 'TÉCNICO SENIOR', 1, '1715897155_1.jpg', '2024-05-20', '2024-05-20 19:32:44', '2024-05-21 16:31:30');
+(2, 1, 'JPERES', '$2y$12$Y9rUuldfZ1u4h2G0sKlZl.yzP53Z0i9aL989UdCW3AZ8SZI7OvIs2', 'TÉCNICO SENIOR', 1, '1715897155_1.jpg', '2024-05-20', '2024-05-20 19:32:44', '2024-05-21 16:31:30'),
+(3, 2, 'ACARDOZO', '$2y$12$uPVxnXs.D78Onr2Os6U35.tzaszr1Q2ThQbpISuVavdBSs955SkVS', 'TÉCNICO JUNIOR', 1, NULL, '2024-05-22', '2024-05-22 20:06:03', '2024-05-22 20:07:39'),
+(4, 3, 'JCORTEZ', '$2y$12$/75R6ejWHF593L.FiYZ/feDu.pLY2NbdStCz7EJCyWL.LOSTvIerG', 'TÉCNICO JUNIOR', 1, NULL, '2024-05-22', '2024-05-22 20:08:03', '2024-05-22 20:08:03');
 
 --
 -- Índices para tablas volcadas
@@ -382,7 +399,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -394,7 +411,7 @@ ALTER TABLE `configuracions`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -406,7 +423,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `personals`
 --
 ALTER TABLE `personals`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -424,13 +441,13 @@ ALTER TABLE `servicios`
 -- AUTO_INCREMENT de la tabla `solicitud_atencions`
 --
 ALTER TABLE `solicitud_atencions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

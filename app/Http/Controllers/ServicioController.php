@@ -55,6 +55,10 @@ class ServicioController extends Controller
             $servicios->orderBy("id", "desc");
         }
 
+        if (Auth::user()->tipo != 'GERENTE TÉCNICO') {
+            $servicios->where("servicios.personal_id", Auth::user()->personal->id);
+        }
+
         $servicios = $servicios->get();
         return response()->JSON([
             "servicios" => $servicios
@@ -72,6 +76,9 @@ class ServicioController extends Controller
         if (trim($search) != "") {
             $servicios->where(DB::raw("CONCAT(clientes.razon_social,' ',personals.nombre,' ',personals.paterno,' ',personals.materno,' ',servicios.cod)"), "LIKE", "%$search%");
             // $servicios->where("razon_social", "LIKE", "%$search%");
+        }
+        if (Auth::user()->tipo != 'GERENTE TÉCNICO') {
+            $servicios->where("servicios.personal_id", Auth::user()->personal->id);
         }
 
         $servicios = $servicios->orderBy("id", "desc")->paginate($request->itemsPerPage);

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\EquipoAccesorioController;
+use App\Http\Controllers\InicioController;
 use App\Http\Controllers\MaquinariaController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\NotificacionController;
@@ -53,16 +54,15 @@ Route::get('/', function () {
 Route::get("configuracions/getConfiguracion", [ConfiguracionController::class, 'getConfiguracion'])->name("configuracions.getConfiguracion");
 
 Route::middleware('auth')->group(function () {
-    // BORRAR
-    Route::get('/vuetify', function () {
-        return Inertia::render('Vuetify/Index');
-    })->name("vuetify");
-
     // INICIO
-    Route::get('/inicio', function () {
-        return Inertia::render('Home');
-    })->name('inicio');
+    Route::get('/inicio', [InicioController::class, 'inicio'])->name('inicio');
+    Route::get("/inicio/getMaximoImagenes", [InicioController::class, 'getMaximoImagenes'])->name("entrenamientos.getMaximoImagenes");
 
+    Route::get('/graf1', [InicioController::class, 'graf1'])->name('graf1');
+    Route::get('/graf2', [InicioController::class, 'graf2'])->name('graf2');
+    Route::get('/graf3', [InicioController::class, 'graf3'])->name('graf3');
+    Route::get('/graf4', [InicioController::class, 'graf4'])->name('graf4');
+    
     // INSTITUCION
     Route::resource("configuracions", ConfiguracionController::class)->only(
         ["index", "show", "update"]
@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
     );
 
     // SOLICITUD DE ANTENCIÓN
+    Route::put("/solicitud_atencions/update_estado/{solicitud_atencion}", [SolicitudAtencionController::class, 'update_estado'])->name("solicitud_atencions.update_estado");
     Route::get("/solicitud_atencions/paginado", [SolicitudAtencionController::class, 'paginado'])->name("solicitud_atencions.paginado");
     Route::get("/solicitud_atencions/listado", [SolicitudAtencionController::class, 'listado'])->name("solicitud_atencions.listado");
     Route::resource("solicitud_atencions", SolicitudAtencionController::class)->only(
