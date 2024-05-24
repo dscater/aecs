@@ -192,25 +192,33 @@ const enviaFormulario = () => {
                                             user.full_name
                                         }}</v-col>
                                     </v-row>
+                                    <v-row v-if="user.personal">
+                                        <v-col cols="4" class="text-right"
+                                            >Especialidad:
+                                        </v-col>
+                                        <v-col cols="8">{{
+                                            user.personal.especialidad
+                                        }}</v-col>
+                                    </v-row>
                                     <v-row>
                                         <v-col cols="4" class="text-right"
                                             >C.I.:
                                         </v-col>
                                         <v-col cols="8">{{
-                                            user.full_ci
+                                            user.personal?.full_ci
                                         }}</v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="4" class="text-right"
                                             >Dirección:
                                         </v-col>
-                                        <v-col cols="8">{{ user.dir }}</v-col>
+                                        <v-col cols="8">{{ user.personal?.domicilio }}</v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="4" class="text-right"
                                             >Teléfono/Celular:
                                         </v-col>
-                                        <v-col cols="8">{{ user.fono }}</v-col>
+                                        <v-col cols="8">{{ user.personal?.cel }}</v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="4" class="text-right"

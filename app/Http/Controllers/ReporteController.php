@@ -60,7 +60,7 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        $servicios = Servicio::where("status", 1)->whereBetween("fecha", [$fecha_fin, $fecha_fin])->get();
+        $servicios = Servicio::where("status", 1)->whereBetween("fecha", [$fecha_ini, $fecha_fin])->get();
 
         if ($servicio_id != 'todos') {
             $servicios = Servicio::where("id", $servicio_id)->get();
