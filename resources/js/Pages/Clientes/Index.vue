@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Cliente Técnico",
+        title: "Clientes",
         disabled: false,
         url: "",
         name_url: "",

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SolicitudMail;
+use App\Models\Configuracion;
 use App\Models\HistorialAccion;
 use App\Models\SolicitudAtencion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -87,6 +91,8 @@ class SolicitudAtencionController extends Controller
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
+            // enviar correo
+            self::enviarCorreo($nuevo_solicitud_atencion->cliente, $nuevo_solicitud_atencion, "PENDIENTE");
 
             DB::commit();
             return redirect()->route("solicitud_atencions.index")->with("bien", "Registro realizado");
@@ -98,9 +104,7 @@ class SolicitudAtencionController extends Controller
         }
     }
 
-    public function show(SolicitudAtencion $solicitud_atencion)
-    {
-    }
+    public function show(SolicitudAtencion $solicitud_atencion) {}
 
     public function update(SolicitudAtencion $solicitud_atencion, Request $request)
     {
@@ -138,6 +142,7 @@ class SolicitudAtencionController extends Controller
         $request->validate($this->validacion, $this->mensajes);
         DB::beginTransaction();
         try {
+            $old_estado = $solicitud_atencion->estado;
             $datos_original = HistorialAccion::getDetalleRegistro($solicitud_atencion, "solicitud_atencions");
             $solicitud_atencion->update([
                 "estado" => $request->estado
@@ -155,6 +160,10 @@ class SolicitudAtencionController extends Controller
                 'hora' => date('H:i:s')
             ]);
 
+            if ($old_estado != $solicitud_atencion->estado) {
+                // enviar correo
+                self::enviarCorreo($solicitud_atencion->cliente, $solicitud_atencion, $solicitud_atencion->estado);
+            }
 
             DB::commit();
             return redirect()->route("solicitud_atencions.index")->with("bien", "Registro actualizado");
@@ -193,6 +202,36 @@ class SolicitudAtencionController extends Controller
             throw ValidationException::withMessages([
                 'error' =>  $e->getMessage(),
             ]);
+        }
+    }
+
+    public static function enviarCorreo($cliente, $solicitud_atencion, $estado)
+    {
+        if ($cliente->correo && trim($cliente->correo)) {
+            // CONFIGURACION
+            $configuracion = Configuracion::first();
+            Config::set(
+                [
+                    'mail.mailers.default' => 'smtp',
+                    'mail.mailers.smtp.host' => 'smtp.hostinger.com',
+                    'mail.mailers.smtp.port' => '587',
+                    'mail.mailers.smtp.encryption' => 'tls',
+                    'mail.mailers.smtp.username' => 'mensaje@compuelectrica.com.bo',
+                    'mail.mailers.smtp.password' => '1Uno2Dos3Tres-0',
+                    'mail.from.address' => 'mensaje@compuelectrica.com.bo',
+                    'mail.from.name' => $configuracion ? $configuracion->alias : 'AESC',
+                ]
+            );
+            // FIN CONFIGURACION
+
+            $datos = [
+                "estado" => $estado,
+                "cliente" => $cliente,
+                "solicitud_atencion" => $solicitud_atencion,
+            ];
+
+            Mail::to($cliente->correo)
+                ->send(new SolicitudMail($datos));
         }
     }
 }

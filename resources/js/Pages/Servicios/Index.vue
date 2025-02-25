@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Servicios",
+        title: "Servicios y Seguimiento",
         disabled: false,
         url: "",
         name_url: "",
@@ -126,7 +126,7 @@ const eliminarServicio = (item) => {
 const verUbicación = async (item) => {};
 </script>
 <template>
-    <Head title="Servicios"></Head>
+    <Head title="Servicios y Seguimiento"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row class="mt-0">

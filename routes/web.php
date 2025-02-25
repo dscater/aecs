@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AvanceObraController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
@@ -62,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/graf2', [InicioController::class, 'graf2'])->name('graf2');
     Route::get('/graf3', [InicioController::class, 'graf3'])->name('graf3');
     Route::get('/graf4', [InicioController::class, 'graf4'])->name('graf4');
-    
+
     // INSTITUCION
     Route::resource("configuracions", ConfiguracionController::class)->only(
         ["index", "show", "update"]
@@ -122,6 +123,10 @@ Route::middleware('auth')->group(function () {
     // EQUIPOS ACCESORIOS
     Route::get("/equipo_accesorios", [EquipoAccesorioController::class, 'index'])->name("equipo_accesorios.index");
     Route::get("/equipo_accesorios/paginado", [EquipoAccesorioController::class, 'paginado'])->name("equipo_accesorios.paginado");
+
+    // BACKUP
+    Route::get("backup", [BackupController::class, 'index'])->name("backup.index");
+    Route::post("backup/generarBackup", [BackupController::class, 'generarBackup'])->name("backup.generarBackup");
 
     // REPORTES
     Route::get('reportes/usuarios', [ReporteController::class, 'usuarios'])->name("reportes.usuarios");

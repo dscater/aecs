@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Reporte Servicios",
+        title: "Reporte Servicios y Seguimiento",
         disabled: false,
         url: "",
         name_url: "",
@@ -178,7 +178,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <Head title="Reporte Servicios"></Head>
+    <Head title="Reporte Servicios y Seguimiento"></Head>
     <v-container>
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row>

@@ -213,13 +213,13 @@ const scrollActive = () => {
                 @click="cambiarUrl(route('servicios.index'))"
                 link
             >
-                <v-list-item-title>Servicios</v-list-item-title>
+                <v-list-item-title>Servicios y Seguimiento</v-list-item-title>
                 <v-tooltip
                     v-if="rail && !mobile"
                     color="white"
                     activator="parent"
                     location="end"
-                    >Servicios</v-tooltip
+                    >Servicios y Seguimiento</v-tooltip
                 >
             </v-list-item>
             <v-list-item
@@ -282,6 +282,26 @@ const scrollActive = () => {
                     activator="parent"
                     location="end"
                     >Usuarios</v-tooltip
+                >
+            </v-list-item>
+            <v-list-item
+                :class="[
+                    route_current == 'backup.index' ? 'active' : '',
+                    drawer ? 'px-3' : '',
+                ]"
+                class="mx-3"
+                v-if="oUser.permisos.includes('backup.index')"
+                prepend-icon="mdi-database"
+                @click="cambiarUrl(route('backup.index'))"
+                link
+            >
+                <v-list-item-title>Backup</v-list-item-title>
+                <v-tooltip
+                    v-if="rail && !mobile"
+                    color="white"
+                    activator="parent"
+                    location="end"
+                    >Backup</v-tooltip
                 >
             </v-list-item>
 
@@ -375,7 +395,7 @@ const scrollActive = () => {
                 <v-list-item
                     v-if="oUser.permisos.includes('reportes.servicios')"
                     prepend-icon="mdi-chevron-right"
-                    title="Servicios"
+                    title="Servicios y Seguimiento"
                     :class="[
                         route_current == 'reportes.servicios' ? 'active' : '',
                         drawer ? 'px-3' : '',
@@ -388,7 +408,7 @@ const scrollActive = () => {
                         color="white"
                         activator="parent"
                         location="end"
-                        >Servicios</v-tooltip
+                        >Servicios y Seguimiento</v-tooltip
                     ></v-list-item
                 >
                 <v-list-item

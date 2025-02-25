@@ -50,8 +50,10 @@ const tituloDialog = computed(() => {
         ? `Agregar Solicitud de Atención`
         : `Editar Solicitud de Atención`;
 });
+const enviando = ref(false);
 
 const enviarFormulario = () => {
+    enviando.value = true;
     let url =
         form["_method"] == "POST"
             ? route("solicitud_atencions.store")
@@ -63,6 +65,8 @@ const enviarFormulario = () => {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
+            enviando.value = false;
+
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -74,6 +78,7 @@ const enviarFormulario = () => {
             emits("envio-formulario");
         },
         onError: (err) => {
+            enviando.value = false;
             Swal.fire({
                 icon: "info",
                 title: "Error",
@@ -236,7 +241,7 @@ const cerrarDialog = () => {
                                         "
                                         variant="underlined"
                                         color="blue"
-                                        label="Fecha*"
+                                        label="Fecha de atención*"
                                         type="date"
                                         required
                                         density="compact"
@@ -258,7 +263,7 @@ const cerrarDialog = () => {
                                         "
                                         variant="underlined"
                                         color="blue"
-                                        label="Hora*"
+                                        label="Hora de llegada*"
                                         type="time"
                                         required
                                         density="compact"
@@ -294,7 +299,9 @@ const cerrarDialog = () => {
                                         >{{ oSolicitudAtencion.descripcion }}
                                     </p>
                                     <p>
-                                        <strong>Fecha y Hora: </strong
+                                        <strong
+                                            >Fecha de atención y Hora de
+                                            llegada: </strong
                                         >{{ oSolicitudAtencion.fecha_hora_t }}
                                     </p>
                                     <p class="mt-3">
@@ -335,6 +342,7 @@ const cerrarDialog = () => {
                         class="bg-blue"
                         prepend-icon="mdi-content-save"
                         @click="enviarFormulario"
+                        :loading="enviando"
                     >
                         Guardar
                     </v-btn>

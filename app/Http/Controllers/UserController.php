@@ -51,6 +51,8 @@ class UserController extends Controller
             "configuracions.edit",
             "configuracions.destroy",
 
+            "backup.index",
+
             "reportes.usuarios",
             "reportes.inventario_equipos",
             "reportes.servicios",

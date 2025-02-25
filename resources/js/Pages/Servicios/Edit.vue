@@ -7,13 +7,13 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "Servicio",
+        title: "Servicios y Seguimiento",
         disabled: false,
         url: route("servicios.index"),
         name_url: "servicios.index",
     },
     {
-        title: "Nuevo",
+        title: "Editar",
         disabled: false,
         url: "",
         name_url: "",

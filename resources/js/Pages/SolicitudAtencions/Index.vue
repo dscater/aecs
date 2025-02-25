@@ -7,7 +7,7 @@ const breadbrums = [
         name_url: "inicio",
     },
     {
-        title: "SolicitudAtencion Técnico",
+        title: "Solicitud de Atención",
         disabled: false,
         url: "",
         name_url: "",
@@ -49,7 +49,12 @@ const headers = ref([
     { title: "Cliente", align: "start", sortable: false },
     { title: "Técnico", align: "start", sortable: false },
     { title: "Descripción de Atención", align: "start", sortable: false },
-    { title: "Fecha y Hora", align: "start", sortable: false },
+    {
+        title: "Fecha y Hora",
+        align: "start",
+        sortable: false,
+        key: "fecha_hora",
+    },
     { title: "Estado", align: "start", sortable: false },
     { title: "Fecha de Registro", align: "start", sortable: false },
     { title: "Acción", align: "end", sortable: false },
@@ -139,7 +144,9 @@ const eliminarSolicitudAtencion = (item) => {
         <BreadBrums :breadbrums="breadbrums"></BreadBrums>
         <v-row
             class="mt-0"
-            v-if="props.auth.user.permisos.includes('solicitud_atencions.create')"
+            v-if="
+                props.auth.user.permisos.includes('solicitud_atencions.create')
+            "
         >
             <v-col cols="12" class="d-flex justify-end">
                 <v-btn
@@ -157,7 +164,7 @@ const eliminarSolicitudAtencion = (item) => {
                     <v-card-title>
                         <v-row class="bg-blue d-flex align-center pa-3">
                             <v-col cols="12" sm="6" md="4">
-                                SolicitudAtencion Técnico
+                                Solicitud de Atención
                             </v-col>
                             <v-col cols="12" sm="6" md="4" offset-md="4">
                                 <v-text-field
@@ -197,6 +204,12 @@ const eliminarSolicitudAtencion = (item) => {
                                 },
                             ]"
                         >
+                            <template v-slot:header.fecha_hora>
+                                <span class=""
+                                    >Fecha de atención<br/> Hora de llegada</span
+                                >
+                            </template>
+
                             <template v-slot:item="{ item }">
                                 <template v-if="!mobile">
                                     <tr>
